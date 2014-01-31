@@ -40,7 +40,7 @@ namespace WPFGenerics
         /// Each time the property changes raise the event
         /// </summary>
         /// <param name="propertyName"></param>
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var eventHandler = PropertyChanged;
             if (eventHandler != null)

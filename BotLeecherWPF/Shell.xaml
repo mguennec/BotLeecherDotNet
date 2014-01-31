@@ -1,0 +1,15 @@
+﻿<mui:ModernWindow x:Class="BotLeecherWPF.Shell"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+  xmlns:my="clr-namespace:BotLeecherWPF"
+  Title="BotLeecher" Height="900" Width="900">
+    <mui:ModernWindow.MenuLinkGroups>
+        <mui:LinkGroup DisplayName="BotLeecher">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="Main" Source="/BotMain.xaml"  />
+                <mui:Link DisplayName="Log" Source="/LogPanel.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+    </mui:ModernWindow.MenuLinkGroups>
+</mui:ModernWindow>

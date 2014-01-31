@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPFGenerics
+namespace BotLeecher.Service
 {
-    public class Class1
-    {
+    public interface NicknameProvider {
+        String GetNickName();
     }
 }

@@ -44,6 +44,7 @@ namespace WPFGenerics
 
             return viewModel;
         }
+
         /// <summary>
         /// Save settings of all viewmodels stored
         /// </summary>

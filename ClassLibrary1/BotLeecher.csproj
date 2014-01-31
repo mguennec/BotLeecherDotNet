@@ -7,8 +7,8 @@
     <ProjectGuid>{AAA8BAF8-8A6B-467B-A6B2-B95952EE046C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClassLibrary1</RootNamespace>
-    <AssemblyName>ClassLibrary1</AssemblyName>
+    <RootNamespace>BotLeecher</RootNamespace>
+    <AssemblyName>BotLeecher</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,23 +30,131 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="IrcDotNet">
-      <HintPath>..\packages\IrcDotNet.0.4.1\lib\net40\IrcDotNet.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Expression.Interactions">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Expression.Interactions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.Interactivity, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.Interactivity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.MefExtensions, Version=4.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Prism.MEFExtensions.4.1.0.0\lib\NET40\Microsoft.Practices.Prism.MefExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Prism.UnityExtensions">
+      <HintPath>..\..\..\..\..\Downloads\Microsoft.Practices.Prism\Microsoft.Practices.Prism.UnityExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.3.0.1304.1\lib\Net45\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception">
+      <HintPath>..\packages\Unity.Interception.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Interception.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
+      <HintPath>..\packages\Unity.Interception.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="NetIrc2">
+      <HintPath>..\packages\NetIrc2.1.0.0.0\lib\NetIrc2.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.Composition.Registration" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Interactivity">
+      <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\System.Windows.Interactivity.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BotMediator.cs" />
+    <Compile Include="BotListener.cs" />
+    <Compile Include="BotLeecher.cs" />
+    <Compile Include="Entities\Setting.cs" />
+    <Compile Include="Enums\PackStatus.cs" />
+    <Compile Include="Enums\SettingProperty.cs" />
+    <Compile Include="Enums\StorageType.cs" />
+    <Compile Include="Event\MessageEventArgs.cs" />
+    <Compile Include="Event\PackEventArgs.cs" />
+    <Compile Include="Event\TransferStatusEventArgs.cs" />
+    <Compile Include="Event\UserListEventArgs.cs" />
+    <Compile Include="NetIrc\Details\IrcStringTypeConverter.cs" />
+    <Compile Include="NetIrc\Details\ThrowExtensions.cs" />
+    <Compile Include="NetIrc\Details\Throw.cs" />
+    <Compile Include="NetIrc\Events\ChannelListEntryEventArgs.cs" />
+    <Compile Include="NetIrc\Events\ChannelTopicChangeEventArgs.cs" />
+    <Compile Include="NetIrc\Events\ChatMessageEventArgs.cs" />
+    <Compile Include="NetIrc\Events\InvitationEventArgs.cs" />
+    <Compile Include="NetIrc\Events\IrcErrorEventArgs.cs" />
+    <Compile Include="NetIrc\Events\JoinLeaveEventArgs.cs" />
+    <Compile Include="NetIrc\Events\KickEventArgs.cs" />
+    <Compile Include="NetIrc\Events\ModeEventArgs.cs" />
+    <Compile Include="NetIrc\Events\NameChangeEventArgs.cs" />
+    <Compile Include="NetIrc\Events\NameListEndEventArgs.cs" />
+    <Compile Include="NetIrc\Events\NameListReplyEventArgs.cs" />
+    <Compile Include="NetIrc\Events\PingReplyEventArgs.cs" />
+    <Compile Include="NetIrc\Events\QuitEventArgs.cs" />
+    <Compile Include="NetIrc\Events\SimpleMessageEventArgs.cs" />
+    <Compile Include="NetIrc\Events\TargetedMessageEventArgs.cs" />
+    <Compile Include="NetIrc\IdentServer.cs" />
+    <Compile Include="NetIrc\IrcClient.cs" />
+    <Compile Include="IrcConnection.cs" />
+    <Compile Include="IrcConnectionListener.cs" />
+    <Compile Include="Model\Pack.cs" />
+    <Compile Include="Model\PackList.cs" />
+    <Compile Include="NetIrc\IrcClientConnectionOptions.cs" />
+    <Compile Include="NetIrc\IrcConstants.cs" />
+    <Compile Include="NetIrc\IrcIdentity.cs" />
+    <Compile Include="NetIrc\IrcReplyCode.cs" />
+    <Compile Include="NetIrc\IrcStatementParseResult.cs" />
+    <Compile Include="NetIrc\IrcString.cs" />
+    <Compile Include="NetIrc\Parsing\IrcStatement.cs" />
+    <Compile Include="NetIrc\Parsing\IrcStatementReceiver.cs" />
+    <Compile Include="NetIrc\Parsing\IrcValidation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\BotLeecherFactory.cs" />
+    <Compile Include="Service\BotLeecherFactoryImpl.cs" />
+    <Compile Include="Service\BotMediator.cs" />
+    <Compile Include="Service\EventMediatorService.cs" />
+    <Compile Include="Service\NicknameProvider.cs" />
+    <Compile Include="Service\PackListReader.cs" />
+    <Compile Include="Service\PackListReaderImpl.cs" />
+    <Compile Include="Service\Properties\SettingsImpl.cs" />
+    <Compile Include="Service\Settings.cs" />
+    <Compile Include="Service\SettingsNicknameProvider.cs" />
+    <Compile Include="TextWriter.cs" />
+    <Compile Include="Tools\EnumsUtils.cs" />
+    <Compile Include="Tools\FileTransfer.cs" />
+    <Compile Include="Tools\Properties.cs" />
+    <Compile Include="Tools\PropertiesLoader.cs" />
+    <Compile Include="Tools\ReceiveFileTransfer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Module\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
