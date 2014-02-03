@@ -118,42 +118,42 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuler</value>
   </data>
   <data name="Channel" xml:space="preserve">
-    <value>Channel</value>
+    <value>Canal</value>
   </data>
   <data name="Connect" xml:space="preserve">
-    <value>Connect</value>
+    <value>Connection</value>
   </data>
   <data name="Dl" xml:space="preserve">
     <value>Dl</value>
   </data>
   <data name="Go" xml:space="preserve">
-    <value>Download</value>
+    <value>Télécharger</value>
   </data>
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
   <data name="Log" xml:space="preserve">
-    <value>Log</value>
+    <value>Journal</value>
   </data>
   <data name="Main" xml:space="preserve">
     <value>Main</value>
   </data>
   <data name="Name" xml:space="preserve">
-    <value>Name</value>
+    <value>Nom</value>
   </data>
   <data name="Refresh" xml:space="preserve">
-    <value>Refresh</value>
+    <value>Actualiser</value>
   </data>
   <data name="Server" xml:space="preserve">
-    <value>Server</value>
+    <value>Serveur</value>
   </data>
   <data name="Size" xml:space="preserve">
-    <value>Size (K)</value>
+    <value>Taille (K)</value>
   </data>
   <data name="Use" xml:space="preserve">
-    <value>Use this bot</value>
+    <value>Leech ce bot</value>
   </data>
 </root>

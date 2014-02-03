@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-            xmlns:my="clr-namespace:BotLeecherWPF"
+             xmlns:my="clr-namespace:BotLeecherWPF"
+             xmlns:lex="http://wpflocalizeextension.codeplex.com"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500">
-
         <StackPanel>
             <Grid Width="500" Height="350"  VerticalAlignment="Top">
                 <Grid.RowDefinitions>
@@ -23,13 +24,13 @@
                     <ColumnDefinition Width="Auto" MinWidth="181" />
                     <ColumnDefinition Width="Auto" MinWidth="157" />
                 </Grid.ColumnDefinitions>
-            <Label VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="0" Content="Server:" Margin="0,0,0,29" Grid.RowSpan="2"/>
-            <Label VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="1" Content="Channel:" Margin="0,1,0,28" Grid.RowSpan="2"/>
+            <Label Name="Server" VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="0" Content="{lex:Loc}" Margin="0,0,0,29" Grid.RowSpan="2"/>
+            <Label Name="Channel" VerticalContentAlignment="Center" Grid.Column="0" Grid.Row="1" Content="{lex:Loc}" Margin="0,1,0,28" Grid.RowSpan="2"/>
             <ComboBox Margin="5,5,5,4" Grid.Column="1" Grid.Row="0" ItemsSource="{Binding ServerList}" SelectedIndex="0" SelectedValue="{Binding Server, Mode=OneWayToSource}" IsEditable="True"/>
             <ComboBox Margin="5,6,5,3" Grid.Column="1" Grid.Row="1" ItemsSource="{Binding Path=ChannelList}" SelectedIndex="0" SelectedValue="{Binding Path=Channel, Mode=OneWayToSource}" IsEditable="True"/>
-            <Button Grid.Column="1" Grid.Row="2" Content="Connect" Command="{Binding Path=ConnectCommand}"/>
+            <mui:ModernButton Name="Connect" Grid.Column="1" Grid.Row="2" Content="{lex:Loc}" Command="{Binding Path=ConnectCommand}"/>
             <ComboBox Margin="5,6,5,3" Grid.Column="3" Grid.Row="0" ItemsSource="{Binding Path=UserList}" SelectedIndex="0" SelectedValue="{Binding User, Mode=OneWayToSource}"/>
-            <Button Grid.Column="3" Grid.Row="2" Content="Use" Command="{Binding Path=ListCommand}"/>
+            <mui:ModernButton Name="Use" Grid.Column="3" Grid.Row="2" Content="{lex:Loc}" Command="{Binding Path=ListCommand}"/>
         </Grid>
     </StackPanel>
 </UserControl>

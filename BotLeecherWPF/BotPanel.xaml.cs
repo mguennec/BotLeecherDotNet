@@ -46,6 +46,7 @@ namespace BotLeecherWPF
             {
                 var name = source.Substring(source.IndexOf("Name=") + 5);
                 this.DataContext = ServiceLocator.Current.GetInstance<MainViewModel>().GetItem(name);
+                dataPager.ItemsSource = ((ItemViewModel)this.DataContext).Packs;
             }
         }
 

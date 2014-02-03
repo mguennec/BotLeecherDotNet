@@ -108,6 +108,9 @@
     <Compile Include="BotMain.xaml.cs">
       <DependentUpon>BotMain.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DataPager.xaml.cs">
+      <DependentUpon>DataPager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="LogPanel.xaml.cs">
       <DependentUpon>LogPanel.xaml</DependentUpon>
     </Compile>
@@ -115,11 +118,20 @@
     <Compile Include="BotPanel.xaml.cs">
       <DependentUpon>BotPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\Resources.fr.Designer.cs">
+      <DependentUpon>Resources.fr.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="ViewModel\ItemViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Page Include="BotMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="DataPager.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="LogPanel.xaml">
       <SubType>Designer</SubType>
@@ -156,6 +168,10 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\Resources.fr.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.fr.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
