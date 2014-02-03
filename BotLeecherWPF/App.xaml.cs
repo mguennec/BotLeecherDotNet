@@ -15,7 +15,6 @@ namespace BotLeecherWPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
             Bootstrapper.Bootstrapper bootstrapper = new Bootstrapper.Bootstrapper();
             bootstrapper.Run();
         }

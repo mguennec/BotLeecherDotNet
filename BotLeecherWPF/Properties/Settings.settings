@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="Culture" Type="System.String" Scope="User">
-      <Value Profile="(Default)">fr-FR</Value>
+      <Value Profile="(Default)">en-US</Value>
     </Setting>
     <Setting Name="UICulture" Type="System.String" Scope="User">
-      <Value Profile="(Default)">fr-FR</Value>
+      <Value Profile="(Default)">en-US</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -4,8 +4,8 @@
     xmlns:mui="http://firstfloorsoftware.com/ModernUI"
     xmlns:my="clr-namespace:BotLeecherWPF"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
-    lex:LocalizeDictionary.DesignCulture="en"
-    lex:LocalizeDictionary.IncludeInvariantCulture="False"
+    lex:LocalizeDictionary.IncludeInvariantCulture="True"
+    lex:LocalizeDictionary.DesignCulture="en-US"
     lex:ResxLocalizationProvider.DefaultAssembly="BotLeecherWPF"
     lex:ResxLocalizationProvider.DefaultDictionary="Resources"
     Title="BotLeecher" Height="900" Width="900">

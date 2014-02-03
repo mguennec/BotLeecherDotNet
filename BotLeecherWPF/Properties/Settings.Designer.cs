@@ -25,7 +25,7 @@ namespace BotLeecherWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("fr-FR")]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
         public string Culture {
             get {
                 return ((string)(this["Culture"]));
@@ -37,7 +37,7 @@ namespace BotLeecherWPF.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("fr-FR")]
+        [global::System.Configuration.DefaultSettingValueAttribute("en-US")]
         public string UICulture {
             get {
                 return ((string)(this["UICulture"]));

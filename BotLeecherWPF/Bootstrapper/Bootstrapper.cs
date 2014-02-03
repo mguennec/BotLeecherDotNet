@@ -42,7 +42,7 @@ namespace BotLeecherWPF.Bootstrapper
         {
             if (!string.IsNullOrEmpty(BotLeecherWPF.Properties.Settings.Default.Culture))
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(BotLeecherWPF.Properties.Settings.Default.Culture);
+                System.Threading.Thread.CurrentThread.CurrentCulture = new CultureInfo(BotLeecherWPF.Properties.Settings.Default.Culture);
             }
             if (!string.IsNullOrEmpty(BotLeecherWPF.Properties.Settings.Default.UICulture))
             {
