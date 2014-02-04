@@ -12,12 +12,12 @@ namespace BotLeecher.Model
     {
         public int Id { get; set; }
         public PackStatus Status { get; set; }
-        public String Name { get; set; }
+        public string Name { get; set; }
         public int Size { get; set; }
         public int Downloads { get; set; }
 
 
-        public String toString()
+        public string toString()
         {
             return "Pack #" + Id + ", " + Size + "K, " + Downloads + " downloads -> " + Name;
         }

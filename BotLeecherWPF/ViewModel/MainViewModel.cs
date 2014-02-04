@@ -7,8 +7,10 @@ using System.ComponentModel.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Threading;
 using WPFGenerics;
 
 namespace BotLeecherWPF.ViewModel
@@ -177,19 +179,23 @@ namespace BotLeecherWPF.ViewModel
 
         private void OnUserList(object sender, Event.UserListEventArgs e)
         {
+            var tmpList = new List<string>();
             foreach (var user in e.Users)
             {
-                var trimmed = user.TrimStart('%', '+', '@');
-                if (!UserList.Contains(trimmed))
+                if (!UserList.Contains(user))
                 {
-                    UserList.Add(trimmed);
+                    tmpList.Add(user);
                 }
             }
-
-            List<string> sortedList = UserList.OrderBy(o => o).ToList();
-            UserList.Clear();
-            foreach (var sortedItem in sortedList)
-                UserList.Add(sortedItem);
+            IList<string> sortedList = tmpList.OrderBy(o => o).ToList();
+            var uiContext = SynchronizationContext.Current;
+            uiContext.Send(x =>
+            {
+                IList<string> list = (IList<string>)x;
+                UserList.Clear();
+                foreach (var sortedItem in list)
+                    UserList.Add(sortedItem);
+            }, sortedList);
         }
     }
 }

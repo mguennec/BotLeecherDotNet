@@ -15,7 +15,7 @@ namespace BotLeecherWPF.Event
 
         public UserListEventArgs(IList<string> users)
         {
-            this.Users = users;
+            this.Users = new List<string>(users);
         }
     }
 }

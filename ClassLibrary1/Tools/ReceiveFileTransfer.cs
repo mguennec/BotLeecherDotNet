@@ -10,8 +10,11 @@ namespace BotLeecher.Tools
 {
     public class ReceiveFileTransfer : FileTransfer
     {
-        public ReceiveFileTransfer(Task<Socket> socket, string user, string file, long startPosition) : base(socket, user, file, startPosition) {
-        }
+        private string p1;
+        private ircsharp.DCCTransfer dCCTransfer;
+        private int p2;
+
+        public ReceiveFileTransfer() { }        
 
         protected override void TransferFile()
         {

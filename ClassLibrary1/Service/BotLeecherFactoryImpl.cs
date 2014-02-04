@@ -1,4 +1,5 @@
 ﻿using BotLeecher.NetIrc;
+using ircsharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -19,7 +20,7 @@ namespace BotLeecher.Service
         this.packListReader = packListReader;
     }
 
-    public BotLeecher getBotLeecher(IrcString user, IrcConnection connection) {
+    public BotLeecher GetBotLeecher(User user, IrcConnection connection) {
         return new BotLeecher(user, connection, settings, packListReader);
     }
 

@@ -1,0 +1,59 @@
+<Project name="IRC" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="../bin/" assemblyKeyFile="." assembly="ircsharp-Debug" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" definesymbols="DEBUG" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="../bin/" signAssembly="True" assemblyKeyFile="IRC.key" assembly="ircsharp" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="." subtype="Directory" buildaction="Compile" />
+    <File name="Channels" subtype="Directory" buildaction="Compile" />
+    <File name="DCC" subtype="Directory" buildaction="Compile" />
+    <File name="ServerInfo" subtype="Directory" buildaction="Compile" />
+    <File name="AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="Connection.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/Channel.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelBan.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelBanContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelList.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelListContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelUser.cs" subtype="Code" buildaction="Compile" />
+    <File name="Channels/ChannelUserContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCC.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCCBase.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCCChat.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCCChatContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCCContainerBase.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCCTransfer.cs" subtype="Code" buildaction="Compile" />
+    <File name="DCC/DCCTransferContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="ServerInfo/ChannelModes.cs" subtype="Code" buildaction="Compile" />
+    <File name="ServerInfo/ChannelModesContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="ServerInfo/ChannelTypes.cs" subtype="Code" buildaction="Compile" />
+    <File name="ServerInfo/ServerInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="Users" subtype="Directory" buildaction="Compile" />
+    <File name="Users/User.cs" subtype="Code" buildaction="Compile" />
+    <File name="Users/UserContainer.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc" subtype="Directory" buildaction="Compile" />
+    <File name="Misc/MessageReciever.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc/IRCBase.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc/EventArguments.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc/IdentificationServer.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc/EventHandlers.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc/UserInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="ConnectionEvents.cs" subtype="Code" buildaction="Compile" />
+    <File name="Misc/ServerConnection.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  </References>
+  <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="OneChangeLogInProjectRootDirectory" />
+</Project>

@@ -9,11 +9,11 @@ namespace BotLeecher.Entities
 {
     public class Setting
     {
-        public String Id { get; set; }
+        public string Id { get; set; }
 
-        public SettingProperty Key {get;set;}
+        public SettingProperty Key { get; set; }
 
-        public IList<String> Value { get; set; }
+        public IList<string> Value { get; set; }
 
         public Setting() { }
         public Setting(SettingProperty key)
@@ -23,14 +23,11 @@ namespace BotLeecher.Entities
         public Setting(SettingProperty key, IList<string> value)
             : this(key)
         {
-            this.Value = value;
+            this.Value = new List<string>(value);
         }
 
         public Setting(SettingProperty key, params string[] value)
-            : this(key)
-        {
-            this.Value = new List<string>(value);
-        }
+            : this(key, new List<string>(value)) { }
 
         public String GetFirstValue()
         {

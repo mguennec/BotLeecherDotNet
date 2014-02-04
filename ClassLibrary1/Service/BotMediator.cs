@@ -3,8 +3,10 @@ using BotLeecher.Enums;
 using BotLeecher.Model;
 using BotLeecher.NetIrc;
 using BotLeecher.NetIrc.Events;
+using ircsharp;
 using log4net;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
 using System.IO;
@@ -24,7 +26,7 @@ namespace BotLeecher.Service
 
         public string Server { get; set; }
         public string Channel { get; set; }
-        public IList<string> Users { get; set; }
+        public IDictionary<string, User> Users { get; set; }
         private EventMediatorService Service;
         private bool ListAsked;
 
@@ -34,12 +36,12 @@ namespace BotLeecher.Service
             this.BotLeecherFactory = botLeecherFactory;
             this.Settings = settings;
             this.Service = service;
-            this.Users = new List<string>();
+            this.Users = new Dictionary<string, User>();
         }    
 
         private void EventHandling() {
-            IrcConnection.GotNameListReply += OnUserList;
-            IrcConnection.GotMessage += OnMessage;
+            //IrcConnection.GotNameListReply += OnUserList;
+            //IrcConnection.GotMessage += OnMessage;
         }
         
         public void WriteText(string text, MessageType type) {
@@ -58,9 +60,7 @@ namespace BotLeecher.Service
             if (IrcConnection != null) {
                 var c = IrcConnection;
                 IrcConnection = null;
-                if (c.IsConnected) {
-                    c.Close();
-                }
+                c.Disconnect();
                 Users.Clear();
                 Service.SendUserList(new List<string>());
                 WriteText("Disconnected");
@@ -71,23 +71,24 @@ namespace BotLeecher.Service
             return IrcConnection == null ? new List<BotLeecher>() : IrcConnection.GetAllBots();
         }
 
-        public void UserListLoaded(string channel, IList<IrcString> users) {
+        public void UserListLoaded(string channel, IList<User> users) {
             if (ListAsked)
             {
                 Users.Clear();
                 ListAsked = false;
             }
-            foreach (IrcString user in users) {
-                Users.Add(user.ToString().TrimStart('%', '+', '@'));
+            foreach (User user in users)
+            {
+                Users.Add(user.Nick, user);
             }
-            Service.SendUserList(Users);
+            Service.SendUserList(new List<string>(Users.Keys));
         }
 
-        public void OnUserList(object sender, NameListReplyEventArgs e)
-        {
-            IList<IrcString> list = new List<IrcString>(e.GetNameList()).OrderBy(o => o.ToString()).ToList<IrcString>();
-            UserListLoaded(e.Channel, list);
-        }
+        //public void OnUserList(object sender, NameListReplyEventArgs e)
+        //{
+        //    IList<IrcString> list = new List<IrcString>(e.GetNameList()).OrderBy(o => o.ToString()).ToList<IrcString>();
+        //    UserListLoaded(e.Channel, list);
+        //}
 
         /**
          *
@@ -111,20 +112,6 @@ namespace BotLeecher.Service
                         WriteText(e.Sender + " : " + message);
                         break;
                     }
-                }
-            }
-        }
-
-        public void OnIncomingFileTransfer(IrcIdentity sender, IrcString recipient, IrcString command, IrcString[] parameters) {
-            var senderName = sender.Nickname;
-            if (IrcConnection != null) {
-                WriteText(senderName + " : Downloading " + parameters[0], MessageType.DOWNLOAD);
-                try {
-                    IrcConnection.GetBotLeecher(senderName).OnIncomingFileTransfer(sender, parameters);
-                    WriteText(senderName + " : Download complete " + parameters[0], MessageType.DOWNLOAD);
-                } catch (Exception e) {
-                    WriteError(e.Message);
-                    WriteError(senderName + " : Download error " + parameters[0]);
                 }
             }
         }
@@ -252,7 +239,7 @@ namespace BotLeecher.Service
 
         public String GetCurrentFile(string user) {
             BotLeecher botLeecher = IrcConnection == null ? null : IrcConnection.GetBotLeecher(user);
-            String file;
+            string file;
             if (botLeecher != null && botLeecher.CurrentTransfer != null && botLeecher.FileName != null) {
                 file = botLeecher.FileName;
             } else {
@@ -269,13 +256,14 @@ namespace BotLeecher.Service
         }
 
         public void CreateLeecher(string user) {
-            if (Users.Contains(user)) {
-                IrcConnection.MakeLeecher(user);
+            if (Users.ContainsKey(user)) {
+                IrcConnection.MakeLeecher(Users[user]);
             }
         }
 
         public void RemoveLeecher(string user) {
-            if (Users.Contains(user)) {
+            if (Users.ContainsKey(user))
+            {
                 IrcConnection.RemoveLeecher(user);
             }
         }
@@ -286,6 +274,31 @@ namespace BotLeecher.Service
 
         public void UpdateStatus(string botName, string fileName, int completion) {
             Service.SendTransferStatus(botName, fileName, completion);
+        }
+
+        public void Failure(User botName, string fileName)
+        {
+            Service.SendMessage("Download Failed:" + fileName, MessageType.ERROR);
+        }
+
+        public void Complete(User botName, string fileName)
+        {
+            Service.SendMessage("Download Complete:" + fileName, MessageType.DOWNLOAD);
+        }
+
+        public void Beginning(User botName, string fileName)
+        {
+            Service.SendMessage("Starting download:" + fileName, MessageType.DOWNLOAD);
+        }
+
+        public void PackListLoaded(User botName, IList<Pack> packList)
+        {
+            Service.SendPack(botName.Nick, packList);
+        }
+
+        public void UpdateStatus(User botName, string fileName, int completion)
+        {
+            Service.SendTransferStatus(botName.Nick, fileName, completion);
         }
     }
 }

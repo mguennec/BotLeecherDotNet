@@ -1,4 +1,5 @@
 ﻿using BotLeecher.Model;
+using ircsharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,14 @@ namespace BotLeecher
 {
    public interface BotListener
    {
-       void PackListLoaded(string botName, IList<Pack> packList);
+       void Failure(User botName, string fileName);
 
-       void UpdateStatus(string botName, string fileName, int completion);
+       void Complete(User botName, string fileName);
+
+       void Beginning(User botName, string fileName);
+
+       void PackListLoaded(User botName, IList<Pack> packList);
+
+       void UpdateStatus(User botName, string fileName, int completion);
     }
 }

@@ -15,8 +15,8 @@ using System.Text;
 using System.Timers;
 using System.Threading;
 using System.Threading.Tasks;
-using BotLeecher.NetIrc;
 using System.Net.NetworkInformation;
+using ircsharp;
 
 namespace BotLeecher
 {
@@ -27,14 +27,14 @@ namespace BotLeecher
         public readonly LeecherQueue Queue;
         public Settings Settings { get; set; }
         public PackListReader PackListReader { get; set; }
-        public IrcString BotUser { get; set; }
+        public User BotUser { get; set; }
         public string Description { get; set; }
         public IrcConnection Connection { get; set; }
         public bool Leeching { get; set; }
         public bool Downloading { get; set; }
         public bool ListRequested { get; set; }
         public int Counter { get; set; }
-        public ReceiveFileTransfer CurrentTransfer { get; set; }
+        public DCCTransfer CurrentTransfer { get; set; }
         public long FileSize { get; set; }
         public string ListFile { get; set; }
         public IList<BotListener> Listeners { get; set; }
@@ -42,7 +42,8 @@ namespace BotLeecher
         public PackList PackList { get; set; }
         public String FileName { get; set; }
 
-        public BotLeecher(IrcString user, IrcConnection connection, Settings settings, PackListReader packListReader) {
+        public BotLeecher(User user, IrcConnection connection, Settings settings, PackListReader packListReader)
+        {
         
             this.Settings = settings;
             this.PackListReader = packListReader;
@@ -56,6 +57,7 @@ namespace BotLeecher
             this.Description = "";
             this.Listeners = new List<BotListener>();
             this.Queue = new LeecherQueue(this);
+            user.DCCTransferRequested += OnDccTransfer;
         }
 
         public void RunQueue() {
@@ -79,72 +81,104 @@ namespace BotLeecher
             Queue.Cancel();
         }
 
+        private void OnDccTransfer(User sender, DCCTransferRequestEventArgs e)
+        {
+            FileSize = e.NewTransfer.BytesTotal;
+            FileName = e.NewTransfer.RemoteFile;
 
-        /**
-         * @param transfer
-         */
-        public void OnIncomingFileTransfer(IrcIdentity sender, IrcString[] parameters) {
-            int port;
-            int.TryParse(parameters[2], out port);
-            int localPort;
-            //Socket socket = GetSocket(parameters[1], port);
-            TcpListener listener = GetSocket(out localPort);
-            Connection.Message(BotUser, "DCC ACCEPT " + parameters[0] + " " + localPort.ToString());
-            Task<Socket> userSocket = listener.AcceptSocketAsync();
-            //socket.Close();
-            long size;
-            long.TryParse(parameters[3], out size);
-            FileSize = size;
-            CurrentTransfer = new ReceiveFileTransfer(userSocket, sender.ToString(), GetFileName(parameters[0]), 0);
+            CurrentTransfer = e.NewTransfer;
+            CurrentTransfer.TransferProgress += OnTransferProgress;
+            CurrentTransfer.TransferComplete += OnTransferComplete;
+            CurrentTransfer.TransferBegun += OnTransferBegun;
+            CurrentTransfer.TransferFailed += OnTransferFailed;
             Queue.OnIncomingFileTransfer();
         }
 
-        private string GetFileName(string fileName)
+        private void OnTransferFailed(DCCTransfer sender, EventArgs e)
         {
-            FileName = fileName;
- 	        var path = Settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue();
-            return path + Path.DirectorySeparatorChar + FileName;
-        }
-
-        private TcpListener GetSocket(out int localPort) {
-            TcpListener s = null;
-            localPort = 0;
-            IPAddress address = null;
-            NetworkInterface[] nics = NetworkInterface.GetAllNetworkInterfaces();
-            foreach (var nic in nics) {
-                if (address != null)
-                {
-                    break;
-                }
-                if (nic.OperationalStatus == OperationalStatus.Up)
-                {
-                    foreach (var prop in nic.GetIPProperties().UnicastAddresses)
-                    {
-                        if (prop.Address.AddressFamily == AddressFamily.InterNetwork)
-                        {
-                            address = prop.Address;
-                            break;
-                        }
-                    }
-                }
-            }
-            if (address == null) {
-                return s;
-            }
-            foreach (int port in IrcClient.Ports)
+            var stream = sender.TransferStream;
+            if (stream != null)
             {
-                try {
-                    s = new TcpListener(address, port);
-                    localPort = port;
-                    s.Start();
-                    break;
-                } catch (SocketException e) {
-                    // Nothing
-                }
+                stream.Close();
             }
-            return s;
+            else
+            {
+                ChangeState(CurrentTransfer.RemoteFile, new PackStatus(PackStatus.Status.AVAILABLE));
+                File.Delete(CurrentTransfer.RemoteFile);
+                ResetTransferState();
+            }
+            FireFailure();
         }
 
+        private void FireFailure()
+        {
+            foreach (BotListener listener in Listeners)
+            {
+                listener.Failure(BotUser, FileName);
+            }
+        }
+
+        private void OnTransferBegun(DCCTransfer sender, EventArgs e)
+        {
+            FireBegin();
+        }
+
+        private void FireBegin()
+        {
+            foreach (BotListener listener in Listeners)
+            {
+                listener.Beginning(BotUser, FileName);
+            }
+        }
+
+        private void OnTransferComplete(DCCTransfer sender, EventArgs e)
+        {
+            var stream = sender.TransferStream;
+            if (stream != null)
+            {
+                var reader = new StreamReader(stream);
+                var sb = new StringBuilder(reader.ReadToEnd());
+                LOGGER.Info("LIST:\t List received for " + BotUser.Nick);
+                ListRequested = false;
+                PackList = PackListReader.ReadPacks(sb);
+                reader.Close();
+                stream.Close();
+                foreach (String message in PackList.Messages)
+                {
+                    Description += message + "\n";
+                }
+                FireListEvent();
+            }
+            else
+            {
+                ResetTransferState();
+                FireStatusEvent();
+
+            }
+            FireComplete();
+        }
+
+        private void ResetTransferState()
+        {
+
+            Downloading = false;
+            CurrentTransfer = null;
+            FileName = null;
+        }
+
+        private void FireComplete()
+        {
+            foreach (BotListener listener in Listeners)
+            {
+                listener.Complete(BotUser, FileName);
+            }
+        }
+
+        private void OnTransferProgress(DCCTransfer sender, DCCTransferProgressEventArgs e)
+        {
+            FireStatusEvent();
+        }
+        
         private void DownloadFinished(string fileName) {
             ChangeState(fileName, new PackStatus(PackStatus.Status.DOWNLOADED));
             LOGGER.Info("FINISHED:\t Transfer finished for " + fileName);
@@ -275,7 +309,7 @@ namespace BotLeecher
                     if (1 == nr) {
                         BotLeecher.ListRequested = true;
                     }
-                    BotLeecher.Connection.Message(BotLeecher.BotUser, "XDCC SEND " + nr);
+                    BotLeecher.BotUser.SendMessage("XDCC SEND " + nr);
                 }
             }
 
@@ -284,50 +318,39 @@ namespace BotLeecher
              */
             public void OnIncomingFileTransfer() {
                 if (BotLeecher.ListRequested) {
-                    try
-                    {
-                        StringBuilder sb = new StringBuilder();
-                        
-                        BotLeecher.CurrentTransfer.TransferToString(sb);
-                        BotLeecher.LOGGER.Info("LIST:\t List received for " + BotLeecher.BotUser);
-                        BotLeecher.ListRequested = false;
-                        BotLeecher.PackList = BotLeecher.PackListReader.ReadPacks(sb);
-                        foreach (String message in BotLeecher.PackList.Messages) {
-                            BotLeecher.Description += message + "\n";
-                        }
-                        BotLeecher.FireListEvent();
-                    } catch (IOException ex) {
-                        LOGGER.Error("Error while receiving file!", ex);
-                    }
+                    var stream = new MemoryStream();
+                    BotLeecher.CurrentTransfer.Accept(stream);
                 } else {
                     BotLeecher.ChangeState(BotLeecher.FileName, new PackStatus(PackStatus.Status.DOWNLOADING));
-                    LOGGER.Info("INCOMING:\t" + BotLeecher.CurrentTransfer.File + " " +
+                    LOGGER.Info("INCOMING:\t" + BotLeecher.CurrentTransfer.RemoteFile + " " +
                             BotLeecher.FileSize + " bytes");
 
                     //if file exists cut one 8bytes off to make transfer go on
-                    if (File.Exists(BotLeecher.CurrentTransfer.File) && (BotLeecher.FileSize == new FileInfo(BotLeecher.CurrentTransfer.File).Length)) {
+                    if (File.Exists(BotLeecher.CurrentTransfer.RemoteFile) && (BotLeecher.FileSize == new FileInfo(BotLeecher.CurrentTransfer.RemoteFile).Length))
+                    {
                         LOGGER.Info("EXISTS:\t try to close connection");
 
                         //FileImageInputStream fis = new FileInputStream
                     } else {
-                        LOGGER.Info("SAVING TO:\t" + BotLeecher.CurrentTransfer.File);
+                        LOGGER.Info("SAVING TO:\t" + BotLeecher.CurrentTransfer.RemoteFile);
                         try {
                             BotLeecher.Downloading = true;
                             BotLeecher.StartTime = new DateTime();
-                            BotLeecher.CurrentTransfer.Transfer();
-                            BotLeecher.DownloadFinished(BotLeecher.CurrentTransfer.File);
+                            BotLeecher.CurrentTransfer.Accept(GetFileName(BotLeecher.CurrentTransfer.RemoteFile));
+                            BotLeecher.DownloadFinished(BotLeecher.CurrentTransfer.RemoteFile);
                         } catch (IOException e) {
-                            BotLeecher.ChangeState(BotLeecher.CurrentTransfer.File, new PackStatus(PackStatus.Status.AVAILABLE));
-                            File.Delete(BotLeecher.CurrentTransfer.File);
+                            BotLeecher.ChangeState(BotLeecher.CurrentTransfer.RemoteFile, new PackStatus(PackStatus.Status.AVAILABLE));
+                            File.Delete(BotLeecher.CurrentTransfer.RemoteFile);
                             LOGGER.Error(e.Message, e);
                         }
-
-                        BotLeecher.Downloading = false;
-                        BotLeecher.CurrentTransfer = null;
-                        BotLeecher.FileName = null;
-                        BotLeecher.FireStatusEvent();
                     }
                 }
+            }
+
+            private string GetFileName(string fileName)
+            {
+                var path = BotLeecher.Settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue();
+                return path + Path.DirectorySeparatorChar + fileName;
             }
 
             public void Cancel() {
@@ -337,7 +360,7 @@ namespace BotLeecher
                 foreach (int id in list) {
                     BotLeecher.ChangeState(id, new PackStatus(PackStatus.Status.AVAILABLE));
                 }
-                BotLeecher.Connection.Message(BotLeecher.BotUser, "XDCC CANCEL");
+                BotLeecher.BotUser.SendMessage("XDCC CANCEL");
             }
 
             private void ClearQueue()

@@ -1,4 +1,5 @@
 ﻿using BotLeecher.NetIrc;
+using ircsharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,6 @@ namespace BotLeecher.Service
          * @param user
          * @return
          */
-        BotLeecher getBotLeecher(IrcString user, IrcConnection connection);
+        BotLeecher GetBotLeecher(User user, IrcConnection connection);
     }
 }

@@ -14,13 +14,13 @@ namespace BotLeecher
          *
          * @param text
          */
-        void WriteText(String text);
+        void WriteText(string text);
 
         /**
          * Write some error.
          * @param text
          */
-        void WriteError(String text);
+        void WriteError(string text);
 
     }
 }

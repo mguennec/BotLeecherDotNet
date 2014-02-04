@@ -1,5 +1,5 @@
-﻿using BotLeecher.NetIrc;
-using BotLeecher.Service;
+﻿using BotLeecher.Service;
+using ircsharp;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BotLeecher
 {
-    public class IrcConnection : NetIrc.IrcClient {
+    public class IrcConnection : Connection {
 
         private IList<IrcConnectionListener> Listeners;
         //private PropertyChangeSupport propertyChangeSupport;
@@ -25,7 +25,9 @@ namespace BotLeecher
         /**
          * Creates a new instance of Main
          */
-        public IrcConnection(NicknameProvider nickProvider, BotLeecherFactory botLeecherFactory, BotMediator mediator) : base() {
+        public IrcConnection(NicknameProvider nickProvider, BotLeecherFactory botLeecherFactory, BotMediator mediator)
+            : base(nickProvider.GetNickName(), nickProvider.GetNickName())
+        {
             /*super(new Configuration.Builder()
                     .setLogin(nickProvider.getNickName()).setName(nickProvider.getNickName())
                     .setFinger(nickProvider.getNickName()).setVersion("xxx").setAutoNickChange(true)
@@ -38,7 +40,7 @@ namespace BotLeecher
             this.Listeners.Add(mediator);
             this.Mediator = mediator;
             base.Connected += JoinChannel;
-            base.Closed += Disconnected;
+            base.Disconnected += Disconnected;
         }
 
         
@@ -46,9 +48,9 @@ namespace BotLeecher
          * @param user
          * @return
          */
-        public BotLeecher MakeLeecher(IrcString user) {
-            BotLeecher leecher = BotLeecherFactory.getBotLeecher(user, this);
-            Leechers.Add(user, leecher);
+        public BotLeecher MakeLeecher(User user) {
+            BotLeecher leecher = BotLeecherFactory.GetBotLeecher(user, this);
+            Leechers.Add(user.Nick, leecher);
             leecher.AddListener(Mediator);
             leecher.Start();
             return leecher;
@@ -72,14 +74,24 @@ namespace BotLeecher
 
         public void Connect()
         {
-            Connect(Mediator.Server);
-            LogIn(NickProvider.GetNickName(), NickProvider.GetNickName(), NickProvider.GetNickName());
-            Join(Mediator.Channel);
-            IrcCommand("NAMES", Mediator.Channel);
+            base.Connect(Mediator.Server, 6667);
         }
         private void JoinChannel(object sender, EventArgs e)
         {
-            //Join(Mediator.Channel);
+            base.Channels.JoinComplete += OnChannelJoined;
+            base.Channels.Join(Mediator.Channel);
+        }
+
+        private void OnChannelJoined(ircsharp.Connection sender, JoinCompleteEventArgs e)
+        {
+            var channel = e.Channel;
+            var list = new List<User>();
+            var enumerator = channel.Users.GetEnumerator();
+            while (enumerator.MoveNext())
+            {
+                list.Add(((ChannelUser) enumerator.Current).User);
+            }
+            Mediator.UserListLoaded(channel.Name, list);
         }
 
 
@@ -87,7 +99,7 @@ namespace BotLeecher
          * @param botName
          * @return
          */
-        public BotLeecher GetBotLeecher(String botName) {
+        public BotLeecher GetBotLeecher(string botName) {
             return Leechers.ContainsKey(botName)? Leechers[botName] : null;
         }
 
@@ -101,14 +113,5 @@ namespace BotLeecher
         public void RemoveBotListener(IrcConnectionListener listener) {
             Listeners.Remove(listener);
         }
-
-        protected override void OnDccCommandReceived(IrcIdentity sender, IrcString recipient, IrcString command, IrcString[] parameters)
-        {
-            if (command.ToString() == "SEND")
-            {
-                Mediator.OnIncomingFileTransfer(sender, recipient, command, parameters);
-            }
-        }
-
     }
 }

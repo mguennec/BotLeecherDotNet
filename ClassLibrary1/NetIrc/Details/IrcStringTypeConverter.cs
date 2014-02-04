@@ -3,7 +3,6 @@
 // MVID: 1FC96D18-89A1-4E53-A98F-EFCAE44F24F1
 // Assembly location: C:\Users\maguenne\Documents\Visual Studio 2013\Projects\TestApplication\packages\NetIrc2.1.0.0.0\lib\NetIrc2.dll
 
-using NetIrc2;
 using System;
 using System.ComponentModel;
 using System.Globalization;

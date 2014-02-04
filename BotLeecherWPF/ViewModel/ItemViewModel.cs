@@ -46,7 +46,7 @@ namespace BotLeecherWPF.ViewModel
         {
             get
             {
-                return dlCommand ?? (dlCommand = new CommandHandler<Pack>(Refresh, true));
+                return refreshCommand ?? (refreshCommand = new CommandHandler<Pack>(Refresh, true));
             }
         }
 
@@ -54,7 +54,7 @@ namespace BotLeecherWPF.ViewModel
         {
             get
             {
-                return dlCommand ?? (dlCommand = new CommandHandler<Pack>(Cancel, true));
+                return cancelCommand ?? (cancelCommand = new CommandHandler<Pack>(Cancel, true));
             }
         }
 
@@ -94,12 +94,13 @@ namespace BotLeecherWPF.ViewModel
                     Source = new Uri(Uri.EscapeUriString("/BotPanel.xaml?Name=" + this.Name), UriKind.Relative)
                 });
             }));
-            AddMockData();
+            //AddMockData();
         }
 
         private void AddMockData()
         {
-            for (int i = 1; i < 900; i++) {
+            for (int i = 1; i < 900; i++)
+            {
                 packs.Add(new Pack
                 {
                     Downloads = i + 8,
@@ -113,16 +114,16 @@ namespace BotLeecherWPF.ViewModel
 
         public void SetPacks(IList<Pack> packs)
         {
-            this.packs.Clear();
-            foreach (var pack in packs)
+            var uiContext = SynchronizationContext.Current;
+            uiContext.Send(x =>
             {
-                this.packs.Add(pack);
-            }
-        }
-
-        public void CollectionViewSource_Filter(object sender, FilterEventArgs e)
-        {
-            e.Accepted = Regex.IsMatch(((Pack)e.Item).Name, Filter + ".*");
+                var packList = (IList<Pack>) x;
+                this.packs.Clear();
+                foreach (var pack in packList)
+                {
+                    this.packs.Add(pack);
+                }
+            }, packs);
         }
 
         public void GetPack(Pack pack)

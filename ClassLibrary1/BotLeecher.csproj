@@ -66,9 +66,6 @@
     <Reference Include="Microsoft.Practices.Unity.Interception.Configuration">
       <HintPath>..\packages\Unity.Interception.3.0.1304.0\lib\Net45\Microsoft.Practices.Unity.Interception.Configuration.dll</HintPath>
     </Reference>
-    <Reference Include="NetIrc2">
-      <HintPath>..\packages\NetIrc2.1.0.0.0\lib\NetIrc2.dll</HintPath>
-    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -151,10 +148,18 @@
     <Compile Include="Tools\ReceiveFileTransfer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Module\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\irc-sharp\irc-sharp.csproj">
+      <Project>{e4e336e6-4103-4146-a312-b99d589c2bac}</Project>
+      <Name>irc-sharp</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

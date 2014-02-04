@@ -1,0 +1,16 @@
+<Combine name="IRC" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="IRC" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="IRC" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="IRC" single="True">
+    <Execute type="None" entry="IRC" />
+  </StartMode>
+  <Entries>
+    <Entry filename="src/IRC.mdp" />
+  </Entries>
+</Combine>

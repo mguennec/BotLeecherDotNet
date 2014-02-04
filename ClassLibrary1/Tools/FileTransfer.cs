@@ -23,6 +23,8 @@ namespace BotLeecher.Tools
         protected DccState State = DccState.INIT;
         protected readonly object StateLock = new object();
 
+        public FileTransfer() { }
+
         public FileTransfer(Task<Socket> socket, string user, string file, long startPosition) {
             this.Socket = socket;
             this.User = user;

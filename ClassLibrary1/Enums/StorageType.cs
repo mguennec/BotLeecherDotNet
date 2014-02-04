@@ -12,7 +12,7 @@ namespace BotLeecher.Enums
         public static readonly StorageType FILES = new StorageType("files");
         public static readonly StorageType EMBEDDED_MONGO = new StorageType("embedded_mongo");
 
-        public String Type {get; private set;}
+        public string Type {get; private set;}
 
         private StorageType(string type) {
             this.Type = type;

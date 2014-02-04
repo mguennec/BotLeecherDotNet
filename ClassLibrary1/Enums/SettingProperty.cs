@@ -9,10 +9,10 @@ namespace BotLeecher.Enums
 {
     public sealed class SettingProperty
     {
-        public String PropertyName {get; set;}
+        public string PropertyName {get; set;}
         public IList<string> DefaultValue {get; set;}
 
-        public static readonly SettingProperty PROP_SAVEFOLDER = new SettingProperty("savefolder", "X:\\Anime");
+        public static readonly SettingProperty PROP_SAVEFOLDER = new SettingProperty("savefolder", "C:\\Test");
         public static readonly SettingProperty PROP_SERVER = new SettingProperty("servers", "irc.rizon.net");
         public static readonly SettingProperty PROP_CHANNEL = new SettingProperty("channels", "#exiled-destiny");
         public static readonly SettingProperty PROP_NICKS = new SettingProperty("nicks", "namekman", "namekmin", "namekman22");

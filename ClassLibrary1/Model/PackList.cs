@@ -9,16 +9,19 @@ namespace BotLeecher.Model
 {
     public class PackList
     {
-        public IList<Pack> Packs { get { return new List<Pack>(Packs); } private set { Packs = value; } }
-        public IList<string> Messages { get { return new List<string>(Messages); } private set { Messages = value; } }
+        private IList<Pack> _packs;
+        private IList<string> _messages;
+
+        public IList<Pack> Packs { get { return new List<Pack>(_packs); } }
+        public IList<string> Messages { get { return new List<string>(_messages); } }
 
         private readonly IDictionary<int, Pack> PackByNumber = new ConcurrentDictionary<int, Pack>();
         private readonly IDictionary<string, Pack> PackByName = new ConcurrentDictionary<string, Pack>();
 
 
         public PackList(IList<Pack> packs, IList<string> messages) {
-            this.Packs = packs;
-            this.Messages = messages;
+            this._packs = packs;
+            this._messages = messages;
             foreach (Pack pack in packs) {
                 PackByName.Add(pack.Name, pack);
                 PackByNumber.Add(pack.Id, pack);

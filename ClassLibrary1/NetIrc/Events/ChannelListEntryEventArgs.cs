@@ -4,8 +4,6 @@
 // Assembly location: C:\Users\maguenne\Documents\Visual Studio 2013\Projects\TestApplication\packages\NetIrc2.1.0.0.0\lib\NetIrc2.dll
 
 using BotLeecher.NetIrc.Details;
-using NetIrc2;
-using NetIrc2.Details;
 using System;
 
 namespace BotLeecher.NetIrc.Events

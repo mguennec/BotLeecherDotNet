@@ -52,6 +52,10 @@ namespace BotLeecherWPF
           }
           Pages.Add(page);
         }
+        if (Pages.Count == 0)
+        {
+            Pages.Add(new ObservableCollection<Pack>());
+        }
         CurrentPage = Pages[0];
         CurrentPageNumber = 1;
       }
@@ -134,7 +138,8 @@ namespace BotLeecherWPF
       if (Pages != null)
       {
         CurrentPageNumber = (CurrentPageNumber + 1) > PageCount ? PageCount : CurrentPageNumber + 1;
-        CurrentPage = Pages[CurrentPageNumber - 1];
+        if (CurrentPageNumber > 0)
+            CurrentPage = Pages[CurrentPageNumber - 1];
       }
     }
 

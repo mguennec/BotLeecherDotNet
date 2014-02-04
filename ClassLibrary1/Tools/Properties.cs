@@ -11,21 +11,21 @@ namespace BotLeecher.Tools
         private Dictionary<String, String> List;
         private String Filename;
 
-        public Properties(String file)
+        public Properties(string file)
         {
             Reload(file);
         }
 
-        public String Get(String field, String defValue)
+        public string Get(string field, string defValue)
         {
             return (Get(field) == null) ? (defValue) : (Get(field));
         }
-        public String Get(String field)
+        public string Get(string field)
         {
             return (List.ContainsKey(field)) ? (List[field]) : (null);
         }
 
-        public void Set(String field, Object value)
+        public void Set(string field, Object value)
         {
             if (!List.ContainsKey(field))
                 List.Add(field, value.ToString());
@@ -59,10 +59,10 @@ namespace BotLeecher.Tools
             Reload(this.Filename);
         }
 
-        public void Reload(String filename)
+        public void Reload(string filename)
         {
             this.Filename = filename;
-            List = new Dictionary<String, String>();
+            List = new Dictionary<string, string>();
 
             if (System.IO.File.Exists(filename))
                 LoadFromFile(filename);

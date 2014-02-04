@@ -7,6 +7,6 @@ using System.Threading.Tasks;
 namespace BotLeecher.Service
 {
     public interface NicknameProvider {
-        String GetNickName();
+        string GetNickName();
     }
 }

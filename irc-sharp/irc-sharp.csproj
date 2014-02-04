@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" Culture="neutral">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E4E336E6-4103-4146-A312-B99D589C2BAC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ircsharp</RootNamespace>
+    <AssemblyName>irc-sharp</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="src\Channels\Channel.cs" />
+    <Compile Include="src\Channels\ChannelBan.cs" />
+    <Compile Include="src\Channels\ChannelBanContainer.cs" />
+    <Compile Include="src\Channels\ChannelContainer.cs" />
+    <Compile Include="src\Channels\ChannelList.cs" />
+    <Compile Include="src\Channels\ChannelListContainer.cs" />
+    <Compile Include="src\Channels\ChannelUser.cs" />
+    <Compile Include="src\Channels\ChannelUserContainer.cs" />
+    <Compile Include="src\Connection.cs" />
+    <Compile Include="src\ConnectionEvents.cs" />
+    <Compile Include="src\DCC\DCC.cs" />
+    <Compile Include="src\DCC\DCCBase.cs" />
+    <Compile Include="src\DCC\DCCChat.cs" />
+    <Compile Include="src\DCC\DCCChatContainer.cs" />
+    <Compile Include="src\DCC\DCCContainerBase.cs" />
+    <Compile Include="src\DCC\DCCTransfer.cs" />
+    <Compile Include="src\DCC\DCCTransferContainer.cs" />
+    <Compile Include="src\Misc\EventArguments.cs" />
+    <Compile Include="src\Misc\EventHandlers.cs" />
+    <Compile Include="src\Misc\IdentificationServer.cs" />
+    <Compile Include="src\Misc\IRCBase.cs" />
+    <Compile Include="src\Misc\MessageReciever.cs" />
+    <Compile Include="src\Misc\ServerConnection.cs" />
+    <Compile Include="src\Misc\UserInfo.cs" />
+    <Compile Include="src\ServerInfo\ChannelModes.cs" />
+    <Compile Include="src\ServerInfo\ChannelModesContainer.cs" />
+    <Compile Include="src\ServerInfo\ChannelTypes.cs" />
+    <Compile Include="src\ServerInfo\ServerInfo.cs" />
+    <Compile Include="src\Users\User.cs" />
+    <Compile Include="src\Users\UserContainer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="src\Channels\.svn\all-wcprops" />
+    <None Include="src\Channels\.svn\entries" />
+    <None Include="src\Channels\.svn\format" />
+    <None Include="src\Channels\.svn\text-base\Channel.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelBan.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelBanContainer.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelContainer.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelList.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelListContainer.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelUser.cs.svn-base" />
+    <None Include="src\Channels\.svn\text-base\ChannelUserContainer.cs.svn-base" />
+    <None Include="src\DCC\.svn\all-wcprops" />
+    <None Include="src\DCC\.svn\entries" />
+    <None Include="src\DCC\.svn\format" />
+    <None Include="src\DCC\.svn\text-base\DCC.cs.svn-base" />
+    <None Include="src\DCC\.svn\text-base\DCCBase.cs.svn-base" />
+    <None Include="src\DCC\.svn\text-base\DCCChat.cs.svn-base" />
+    <None Include="src\DCC\.svn\text-base\DCCChatContainer.cs.svn-base" />
+    <None Include="src\DCC\.svn\text-base\DCCContainerBase.cs.svn-base" />
+    <None Include="src\DCC\.svn\text-base\DCCTransfer.cs.svn-base" />
+    <None Include="src\DCC\.svn\text-base\DCCTransferContainer.cs.svn-base" />
+    <None Include="src\Misc\.svn\all-wcprops" />
+    <None Include="src\Misc\.svn\entries" />
+    <None Include="src\Misc\.svn\format" />
+    <None Include="src\Misc\.svn\text-base\EventArguments.cs.svn-base" />
+    <None Include="src\Misc\.svn\text-base\EventHandlers.cs.svn-base" />
+    <None Include="src\Misc\.svn\text-base\IdentificationServer.cs.svn-base" />
+    <None Include="src\Misc\.svn\text-base\IRCBase.cs.svn-base" />
+    <None Include="src\Misc\.svn\text-base\MessageReciever.cs.svn-base" />
+    <None Include="src\Misc\.svn\text-base\ServerConnection.cs.svn-base" />
+    <None Include="src\Misc\.svn\text-base\UserInfo.cs.svn-base" />
+    <None Include="src\ServerInfo\.svn\all-wcprops" />
+    <None Include="src\ServerInfo\.svn\entries" />
+    <None Include="src\ServerInfo\.svn\format" />
+    <None Include="src\ServerInfo\.svn\text-base\ChannelModes.cs.svn-base" />
+    <None Include="src\ServerInfo\.svn\text-base\ChannelModesContainer.cs.svn-base" />
+    <None Include="src\ServerInfo\.svn\text-base\ChannelTypes.cs.svn-base" />
+    <None Include="src\ServerInfo\.svn\text-base\ServerInfo.cs.svn-base" />
+    <None Include="src\Users\.svn\all-wcprops" />
+    <None Include="src\Users\.svn\entries" />
+    <None Include="src\Users\.svn\format" />
+    <None Include="src\Users\.svn\text-base\User.cs.svn-base" />
+    <None Include="src\Users\.svn\text-base\UserContainer.cs.svn-base" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="src\Channels\.svn\prop-base\" />
+    <Folder Include="src\Channels\.svn\props\" />
+    <Folder Include="src\Channels\.svn\tmp\prop-base\" />
+    <Folder Include="src\Channels\.svn\tmp\props\" />
+    <Folder Include="src\Channels\.svn\tmp\text-base\" />
+    <Folder Include="src\DCC\.svn\prop-base\" />
+    <Folder Include="src\DCC\.svn\props\" />
+    <Folder Include="src\DCC\.svn\tmp\prop-base\" />
+    <Folder Include="src\DCC\.svn\tmp\props\" />
+    <Folder Include="src\DCC\.svn\tmp\text-base\" />
+    <Folder Include="src\Misc\.svn\prop-base\" />
+    <Folder Include="src\Misc\.svn\props\" />
+    <Folder Include="src\Misc\.svn\tmp\prop-base\" />
+    <Folder Include="src\Misc\.svn\tmp\props\" />
+    <Folder Include="src\Misc\.svn\tmp\text-base\" />
+    <Folder Include="src\ServerInfo\.svn\prop-base\" />
+    <Folder Include="src\ServerInfo\.svn\props\" />
+    <Folder Include="src\ServerInfo\.svn\tmp\prop-base\" />
+    <Folder Include="src\ServerInfo\.svn\tmp\props\" />
+    <Folder Include="src\ServerInfo\.svn\tmp\text-base\" />
+    <Folder Include="src\Users\.svn\prop-base\" />
+    <Folder Include="src\Users\.svn\props\" />
+    <Folder Include="src\Users\.svn\tmp\prop-base\" />
+    <Folder Include="src\Users\.svn\tmp\props\" />
+    <Folder Include="src\Users\.svn\tmp\text-base\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
