@@ -191,7 +191,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassLibrary1\BotLeecher.csproj">
+    <ProjectReference Include="..\BotLeecher\BotLeecher.csproj">
       <Project>{aaa8baf8-8a6b-467b-a6b2-b95952ee046c}</Project>
       <Name>BotLeecher</Name>
     </ProjectReference>
