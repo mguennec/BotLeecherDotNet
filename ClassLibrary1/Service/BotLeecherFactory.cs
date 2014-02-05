@@ -1,5 +1,4 @@
-﻿using BotLeecher.NetIrc;
-using ircsharp;
+﻿using ircsharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;

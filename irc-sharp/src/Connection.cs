@@ -948,7 +948,8 @@ namespace ircsharp
 					break;
 				case "dcc":
                     User sender = users.GetUser(user.Nick);
-					string[] strDccParams = strParams.Split(new char[] {' '});
+                    string regexSpliter = @"(?<=^(?:[^""]*""[^""]*"")*[^""]*) ";
+                    string[] strDccParams = System.Text.RegularExpressions.Regex.Split(strParams, regexSpliter);
 					if (strDccParams.Length>=4)
 					{
 						switch (strDccParams[0].ToLower())
@@ -958,7 +959,7 @@ namespace ircsharp
 							dcc.Chats.AddDcc(newChat);
 							break;
 						case "send":
-							DCCTransfer newTransfer = new DCCTransfer(base.CurrentConnection, long.Parse(strDccParams[2]), int.Parse(strDccParams[3]), user.Nick, strDccParams[1], long.Parse(strDccParams[4]), dcc.Transfer);
+							DCCTransfer newTransfer = new DCCTransfer(base.CurrentConnection, long.Parse(strDccParams[2]), int.Parse(strDccParams[3]), user.Nick, strDccParams[1].Trim('"'), long.Parse(strDccParams[4]), dcc.Transfer);
 							dcc.Transfer.AddDcc(newTransfer);
                             sender.FireDCCTransferRequest(newTransfer);
 							break;

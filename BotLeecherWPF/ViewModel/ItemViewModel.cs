@@ -24,7 +24,7 @@ namespace BotLeecherWPF.ViewModel
     public class ItemViewModel : ViewModelBase
     {
         private string name;
-        private string filter;
+        private string filter = "";
         private ObservableCollection<Pack> packs = new ObservableCollection<Pack>();
         private DownloadState state = new DownloadState();
         private BotMediator BotMediator;
@@ -33,6 +33,7 @@ namespace BotLeecherWPF.ViewModel
         private ICommand refreshCommand;
         private ICommand cancelCommand;
         private ICollectionView _collectionView;
+        private SynchronizationContext context;
 
         public ICommand DlCommand
         {
@@ -46,7 +47,7 @@ namespace BotLeecherWPF.ViewModel
         {
             get
             {
-                return refreshCommand ?? (refreshCommand = new CommandHandler<Pack>(Refresh, true));
+                return refreshCommand ?? (refreshCommand = new CommandHandler(Refresh, true));
             }
         }
 
@@ -54,7 +55,7 @@ namespace BotLeecherWPF.ViewModel
         {
             get
             {
-                return cancelCommand ?? (cancelCommand = new CommandHandler<Pack>(Cancel, true));
+                return cancelCommand ?? (cancelCommand = new CommandHandler(Cancel, true));
             }
         }
 
@@ -72,7 +73,7 @@ namespace BotLeecherWPF.ViewModel
 
         private bool CollectionViewSourceFilter(object obj)
         {
-            return Regex.IsMatch(((Pack)obj).Name, Filter + ".*");
+            return Regex.IsMatch(((Pack)obj).Name, Filter, RegexOptions.IgnoreCase);
         }
 
         private void AddTab()
@@ -114,8 +115,8 @@ namespace BotLeecherWPF.ViewModel
 
         public void SetPacks(IList<Pack> packs)
         {
-            var uiContext = SynchronizationContext.Current;
-            uiContext.Send(x =>
+            context = context ?? SynchronizationContext.Current;
+            context.Send(x =>
             {
                 var packList = (IList<Pack>) x;
                 this.packs.Clear();
@@ -128,16 +129,16 @@ namespace BotLeecherWPF.ViewModel
 
         public void GetPack(Pack pack)
         {
-            BotMediator.GetPack(name, pack.Id);
+            Task.Factory.StartNew(() => BotMediator.GetPack(name, pack.Id), TaskCreationOptions.LongRunning);
         }
 
-        private void Cancel(Pack obj)
+        private void Cancel()
         {
-            BotMediator.Cancel(this.Name);
+            Task.Factory.StartNew(() => BotMediator.Cancel(this.Name), TaskCreationOptions.LongRunning);
         }
-        private void Refresh(Pack obj)
+        private void Refresh()
         {
-            GetList(true);
+            Task.Factory.StartNew(() => GetList(true), TaskCreationOptions.LongRunning);
         }
 
 

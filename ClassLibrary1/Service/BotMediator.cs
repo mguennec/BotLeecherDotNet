@@ -1,8 +1,6 @@
 ﻿using BotLeecher.Entities;
 using BotLeecher.Enums;
 using BotLeecher.Model;
-using BotLeecher.NetIrc;
-using BotLeecher.NetIrc.Events;
 using ircsharp;
 using log4net;
 using System;
@@ -84,12 +82,6 @@ namespace BotLeecher.Service
             Service.SendUserList(new List<string>(Users.Keys));
         }
 
-        //public void OnUserList(object sender, NameListReplyEventArgs e)
-        //{
-        //    IList<IrcString> list = new List<IrcString>(e.GetNameList()).OrderBy(o => o.ToString()).ToList<IrcString>();
-        //    UserListLoaded(e.Channel, list);
-        //}
-
         /**
          *
          */
@@ -100,20 +92,6 @@ namespace BotLeecher.Service
 
         public BotMediator() {
             //redirectOutputStreams();
-        }
-
-        private void OnMessage(object sender, ChatMessageEventArgs e)
-        {
- 	        string message = e.Message;
-            WriteText(e.Sender + " : " + message);
-            if (message != null) {
-                foreach (string keyword in Settings.Get(SettingProperty.PROP_KEYWORDS).Value) {
-                    if (message.ToLower().Contains(keyword.ToLower())) {
-                        WriteText(e.Sender + " : " + message);
-                        break;
-                    }
-                }
-            }
         }
 
         /**
@@ -299,6 +277,27 @@ namespace BotLeecher.Service
         public void UpdateStatus(User botName, string fileName, int completion)
         {
             Service.SendTransferStatus(botName.Nick, fileName, completion);
+        }
+
+
+        //private void OnMessage(object sender, ChatMessageEventArgs e)
+        //{
+        //    
+        //}
+
+        public void OnMessage(User user, string message)
+        {
+            if (user != null && message != null)
+            {
+                foreach (string keyword in Settings.Get(SettingProperty.PROP_KEYWORDS).Value)
+                {
+                    if (message.ToLower().Contains(keyword.ToLower()))
+                    {
+                        WriteText(user.Nick + " : " + message);
+                        break;
+                    }
+                }
+            }
         }
     }
 }

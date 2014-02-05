@@ -64,7 +64,11 @@ namespace BotLeecher.Service
         {
             IList<Pack> packs = new List<Pack>();
             IList<string> messages = new List<string>();
-            IList<string> files = new List<string>(Directory.GetFiles(settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue()));
+            IList<string> filesPath = new List<string>(Directory.GetFiles(settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue()));
+            IList<string> files = new List<string>();
+            foreach (string file in filesPath) {
+                files.Add(Path.GetFileName(file));
+            }
             StringReader reader = null;
             try
             {

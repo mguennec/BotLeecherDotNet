@@ -104,10 +104,11 @@ namespace BotLeecher
             else
             {
                 ChangeState(CurrentTransfer.RemoteFile, new PackStatus(PackStatus.Status.AVAILABLE));
-                File.Delete(CurrentTransfer.RemoteFile);
-                ResetTransferState();
+                File.Delete(CurrentTransfer.LocalFile);
             }
             FireFailure();
+            ResetTransferState();
+            FireStatusEvent();
         }
 
         private void FireFailure()
@@ -136,6 +137,7 @@ namespace BotLeecher
             var stream = sender.TransferStream;
             if (stream != null)
             {
+                stream.Seek(0, SeekOrigin.Begin);
                 var reader = new StreamReader(stream);
                 var sb = new StringBuilder(reader.ReadToEnd());
                 LOGGER.Info("LIST:\t List received for " + BotUser.Nick);
@@ -151,11 +153,11 @@ namespace BotLeecher
             }
             else
             {
-                ResetTransferState();
-                FireStatusEvent();
-
+                DownloadFinished(CurrentTransfer.RemoteFile);
             }
             FireComplete();
+            ResetTransferState();
+            FireStatusEvent();
         }
 
         private void ResetTransferState()
@@ -214,7 +216,7 @@ namespace BotLeecher
                 rate = 0;
             } else {
                 long currentData = CurrentTransfer == null ? 0 : CurrentTransfer.BytesTransfered;
-                long diff = (new DateTime().Ticks - StartTime.Ticks) / 1000;
+                long diff = (DateTime.Now.Ticks - StartTime.Ticks) / 1000;
                 rate = currentData / diff;
             }
             return rate;
@@ -335,9 +337,8 @@ namespace BotLeecher
                         LOGGER.Info("SAVING TO:\t" + BotLeecher.CurrentTransfer.RemoteFile);
                         try {
                             BotLeecher.Downloading = true;
-                            BotLeecher.StartTime = new DateTime();
+                            BotLeecher.StartTime = DateTime.Now;
                             BotLeecher.CurrentTransfer.Accept(GetFileName(BotLeecher.CurrentTransfer.RemoteFile));
-                            BotLeecher.DownloadFinished(BotLeecher.CurrentTransfer.RemoteFile);
                         } catch (IOException e) {
                             BotLeecher.ChangeState(BotLeecher.CurrentTransfer.RemoteFile, new PackStatus(PackStatus.Status.AVAILABLE));
                             File.Delete(BotLeecher.CurrentTransfer.RemoteFile);

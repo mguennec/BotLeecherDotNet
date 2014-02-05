@@ -92,6 +92,14 @@ namespace BotLeecher
                 list.Add(((ChannelUser) enumerator.Current).User);
             }
             Mediator.UserListLoaded(channel.Name, list);
+            GetMessageReciever(channel.NetworkIdentifier).RecievedMessage += OnMessage;
+        }
+
+        private void OnMessage(MessageReciever sender, MessageEventArgs e)
+        {
+            foreach (var listener in Listeners) {
+                listener.OnMessage(e.User, e.Message);
+            }
         }
 
 

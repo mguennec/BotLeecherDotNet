@@ -1,15 +1,18 @@
 ﻿using BotLeecher.Service;
 using FirstFloor.ModernUI.Windows;
+using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.Composition;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using WPFGenerics;
 
@@ -22,6 +25,7 @@ namespace BotLeecherWPF.ViewModel
         private EventMediatorService Service;
         private ObservableCollection<string> serverList = new ObservableCollection<string>();
         private ObservableCollection<string> channelList = new ObservableCollection<string>();
+        private SynchronizationContext context;
 
         public string Server { get; set; }
         public string Channel { get; set; }
@@ -174,7 +178,39 @@ namespace BotLeecherWPF.ViewModel
 
         private void OnMessage(object sender, Event.MessageEventArgs e)
         {
-            Log = e.Message + "\n" + Log;
+            context = context ?? SynchronizationContext.Current;
+            context.Send(x =>
+            {
+                Event.MessageEventArgs msg = (Event.MessageEventArgs)x;
+                Log = DateTime.Now.ToLongTimeString() + ": " + msg.Message + "\n" + Log;
+                TaskbarIcon tbi = new TaskbarIcon();
+
+                tbi.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BotLeecherWPF.Resources.PerfCenterCpl.ico"));
+                tbi.Visibility = System.Windows.Visibility.Visible;
+                tbi.TrayBalloonTipClosed += CloseBalloon;
+                BalloonIcon icon;
+                if (msg.Type == MessageType.ERROR)
+                {
+                    icon = BalloonIcon.Error;
+                }
+                else if (msg.Type == MessageType.DOWNLOAD)
+                {
+                    icon = BalloonIcon.None;
+                }
+                else
+                {
+                    icon = BalloonIcon.Info;
+                }
+                tbi.ShowBalloonTip(Enum.GetName(typeof(MessageType), msg.Type), msg.Message, icon);
+            }, e);
+        }
+
+        private void CloseBalloon(object sender, System.Windows.RoutedEventArgs e)
+        {
+            if (e.Source is IDisposable) {
+                var disposable = ((IDisposable)e.Source);
+                disposable.Dispose();
+            }
         }
 
         private void OnUserList(object sender, Event.UserListEventArgs e)
@@ -188,8 +224,8 @@ namespace BotLeecherWPF.ViewModel
                 }
             }
             IList<string> sortedList = tmpList.OrderBy(o => o).ToList();
-            var uiContext = SynchronizationContext.Current;
-            uiContext.Send(x =>
+            context = context ?? SynchronizationContext.Current;
+            context.Send(x =>
             {
                 IList<string> list = (IList<string>)x;
                 UserList.Clear();

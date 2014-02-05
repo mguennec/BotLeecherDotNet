@@ -23,6 +23,10 @@ namespace BotLeecher.Model
             this._packs = packs;
             this._messages = messages;
             foreach (Pack pack in packs) {
+                if (PackByName.ContainsKey(pack.Name))
+                {
+                    PackByName.Remove(pack.Name);
+                }
                 PackByName.Add(pack.Name, pack);
                 PackByNumber.Add(pack.Id, pack);
             }
