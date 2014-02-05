@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WPFGenerics
+namespace BotLeecher.Tools
 {
     public abstract class ModelBase : INotifyPropertyChanged
     {

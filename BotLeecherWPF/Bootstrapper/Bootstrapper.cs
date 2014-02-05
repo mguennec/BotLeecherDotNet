@@ -28,7 +28,7 @@ namespace BotLeecherWPF.Bootstrapper
             Application.Current.MainWindow = (Shell) CreateShell();
             InitializeCultures();
         }
-        
+
         protected override void ConfigureAggregateCatalog()
         {
             base.ConfigureAggregateCatalog();

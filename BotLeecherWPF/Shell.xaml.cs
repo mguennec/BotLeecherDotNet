@@ -35,7 +35,15 @@ namespace BotLeecherWPF
         {
             this.DataContext = ServiceLocator.Current.GetInstance<MainViewModel>();
             Application.Current.MainWindow = this;
+            this.Closed += Exit;
         }
 
+        private void Exit(object sender, EventArgs e)
+        {
+            Environment.Exit(0);
+        }
+        
     }
+
+    
 }

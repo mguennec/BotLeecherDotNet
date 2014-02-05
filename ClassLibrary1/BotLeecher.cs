@@ -250,7 +250,6 @@ namespace BotLeecher
         public void ChangeState(Pack pack, PackStatus status) {
             if (pack != null && status != null) {
                 pack.Status = status;
-                FireListEvent();
             }
         }
 

@@ -114,6 +114,7 @@
     <Compile Include="TextWriter.cs" />
     <Compile Include="Tools\EnumsUtils.cs" />
     <Compile Include="Tools\FileTransfer.cs" />
+    <Compile Include="Tools\ModelBase.cs" />
     <Compile Include="Tools\Properties.cs" />
     <Compile Include="Tools\PropertiesLoader.cs" />
     <Compile Include="Tools\ReceiveFileTransfer.cs" />
