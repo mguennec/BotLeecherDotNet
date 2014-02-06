@@ -122,7 +122,7 @@ namespace BotLeecherWPF.ViewModel
 
         private void ChangePackList(IList<Pack> packList)
         {
-            this.packs.ChangeData(packList);
+            this.packs.AddRange(packList, true);
         }
 
         public void GetPack(Pack pack)

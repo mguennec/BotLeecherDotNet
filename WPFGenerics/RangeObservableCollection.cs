@@ -17,36 +17,23 @@ namespace WPFGenerics
             if (!_suppressNotification)
                 base.OnCollectionChanged(e);
         }
-
-        public void AddRange(IEnumerable<T> list)
+        
+        public void AddRange(IEnumerable<T> list, bool reset = false)
         {
             if (list == null)
                 throw new ArgumentNullException("list");
 
             _suppressNotification = true;
-
+            if (reset)
+            {
+                Clear();
+            }
             foreach (T item in list)
             {
                 Add(item);
             }
             _suppressNotification = false;
             OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-        }
-
-        public void ChangeData(IEnumerable<T> list)
-        {
-            if (list == null)
-                throw new ArgumentNullException("list");
-
-            _suppressNotification = true;
-            Clear();
-            foreach (T item in list)
-            {
-                Add(item);
-            }
-            _suppressNotification = false;
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Reset));
-
         }
     }
 

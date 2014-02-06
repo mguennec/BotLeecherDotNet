@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using BotLeecher.Model;
+using WPFGenerics;
 
 namespace BotLeecherWPF
 {
@@ -40,10 +41,10 @@ namespace BotLeecherWPF
           }
           enumerator.Reset();
           PageCount = (int)Math.Ceiling(count / (double)ItemsPerPage);
-        Pages = new ObservableCollection<ObservableCollection<Pack>>();
+          Pages = new RangeObservableCollection<RangeObservableCollection<Pack>>();
         for (int i = 0; i < PageCount; i++)
         {
-            ObservableCollection<Pack> page = new ObservableCollection<Pack>();
+            RangeObservableCollection<Pack> page = new RangeObservableCollection<Pack>();
           for (int j = 0; j < ItemsPerPage; j++)
           {
             enumerator.MoveNext();
@@ -54,7 +55,7 @@ namespace BotLeecherWPF
         }
         if (Pages.Count == 0)
         {
-            Pages.Add(new ObservableCollection<Pack>());
+            Pages.Add(new RangeObservableCollection<Pack>());
         }
         CurrentPage = Pages[0];
         CurrentPageNumber = 1;
@@ -63,22 +64,24 @@ namespace BotLeecherWPF
 
     private int PageCount;
     private int _CurrentPageNumber;
-    private ObservableCollection<ObservableCollection<Pack>> Pages;
-    private ObservableCollection<Pack> _ItemsSource;
-    private ObservableCollection<Pack> _CurrentPage;
+    private RangeObservableCollection<RangeObservableCollection<Pack>> Pages;
+    private RangeObservableCollection<Pack> _ItemsSource;
+    private RangeObservableCollection<Pack> _CurrentPage = new RangeObservableCollection<Pack>();
     private ICollectionView view;
 
-    public ObservableCollection<Pack> CurrentPage
+    public RangeObservableCollection<Pack> CurrentPage
     {
       get { return _CurrentPage; }
       set
       {
-        _CurrentPage = value;
-        if (PropertyChanged != null)
-          PropertyChanged(this, new PropertyChangedEventArgs("CurrentPage"));
+          if (_CurrentPage == null)
+          {
+              _CurrentPage = new RangeObservableCollection<Pack>();
+          }
+          _CurrentPage.AddRange(value, true);
       }
     }
-    public ObservableCollection<Pack> ItemsSource
+    public RangeObservableCollection<Pack> ItemsSource
     {
       get { return _ItemsSource; }
       set
@@ -86,7 +89,6 @@ namespace BotLeecherWPF
         _ItemsSource = value;
         view = CollectionViewSource.GetDefaultView(value);
         GeneratePages();
-        _ItemsSource.CollectionChanged += UpdateSource;
         view.CollectionChanged += UpdateSource;
       }
     }
