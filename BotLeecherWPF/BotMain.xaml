@@ -10,14 +10,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="500">
         <StackPanel>
-            <Grid Width="500" Height="350"  VerticalAlignment="Top">
+            <Grid Width="500" Height="90"  VerticalAlignment="Top">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
                     <RowDefinition Height="30" />
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="139*"/>
-                    <RowDefinition Height="109*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" MinWidth="62" />
