@@ -25,14 +25,16 @@ namespace BotLeecherWPF
     public partial class LogPanel : UserControl
     {
         [ImportingConstructor]
-        public LogPanel(ItemViewModel vm)
+        public LogPanel(MainViewModel vm)
         {
             this.DataContext = vm;
+            this.InitializeComponent();
         }
 
         public LogPanel()
+            : this(ServiceLocator.Current.GetInstance<MainViewModel>())
         {
-            this.DataContext = ServiceLocator.Current.GetInstance<MainViewModel>();
+            
         }
     }
 }

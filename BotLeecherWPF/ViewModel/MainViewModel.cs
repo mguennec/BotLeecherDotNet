@@ -26,11 +26,13 @@ namespace BotLeecherWPF.ViewModel
         private ObservableCollection<string> serverList = new ObservableCollection<string>();
         private ObservableCollection<string> channelList = new ObservableCollection<string>();
         private SynchronizationContext context;
+        private string log = "";
+        private TaskbarIcon tbi;
 
         public string Server { get; set; }
         public string Channel { get; set; }
-        public string Log { get; set; }
         public string User { get; set; }
+        public string Log { get { return log; } set { SetProperty(ref log, value); } }
 
         private ObservableCollection<string> userList = new ObservableCollection<string>();
         private ICommand connectCommand;
@@ -105,6 +107,10 @@ namespace BotLeecherWPF.ViewModel
             Service.MessageEvent += OnMessage;
             Service.PackEvent += OnPack;
             Service.TransferStatusEvent += OnTransferStatus;
+            tbi = new TaskbarIcon();
+
+            tbi.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BotLeecherWPF.Resources.PerfCenterCpl.ico"));
+            tbi.Visibility = System.Windows.Visibility.Visible;
 
         }
 
@@ -183,11 +189,6 @@ namespace BotLeecherWPF.ViewModel
             {
                 Event.MessageEventArgs msg = (Event.MessageEventArgs)x;
                 Log = DateTime.Now.ToLongTimeString() + ": " + msg.Message + "\n" + Log;
-                TaskbarIcon tbi = new TaskbarIcon();
-
-                tbi.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BotLeecherWPF.Resources.PerfCenterCpl.ico"));
-                tbi.Visibility = System.Windows.Visibility.Visible;
-                tbi.TrayBalloonTipClosed += CloseBalloon;
                 BalloonIcon icon;
                 if (msg.Type == MessageType.ERROR)
                 {
@@ -201,7 +202,7 @@ namespace BotLeecherWPF.ViewModel
                 {
                     icon = BalloonIcon.Info;
                 }
-                tbi.ShowBalloonTip(Enum.GetName(typeof(MessageType), msg.Type), msg.Message, icon);
+                tbi.ShowBalloonTip(Enum.GetName(typeof(MessageType), msg.Type), Log.Substring(0, Math.Min(Log.Length, 500)), icon);
             }, e);
         }
 

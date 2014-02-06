@@ -15,10 +15,9 @@
         </Style>
     </mui:ModernWindow.Resources>
     <mui:ModernWindow.MenuLinkGroups>
-        <mui:LinkGroup DisplayName="BotLeecher">
+        <mui:LinkGroup DisplayName="BotLeecher" >
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Main" Source="/BotMain.xaml"  />
-                <mui:Link DisplayName="Log" Source="/LogPanel.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

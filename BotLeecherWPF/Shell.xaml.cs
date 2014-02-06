@@ -28,14 +28,13 @@ namespace BotLeecherWPF
         [ImportingConstructor]
         public Shell(MainViewModel vm)
         {
-            this.DataContext = vm;
+            Application.Current.MainWindow = this;
+            this.Closed += Exit;
         }
 
         public Shell()
+            : this(ServiceLocator.Current.GetInstance<MainViewModel>())
         {
-            this.DataContext = ServiceLocator.Current.GetInstance<MainViewModel>();
-            Application.Current.MainWindow = this;
-            this.Closed += Exit;
         }
 
         private void Exit(object sender, EventArgs e)

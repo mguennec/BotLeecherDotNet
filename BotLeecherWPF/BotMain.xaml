@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:my="clr-namespace:BotLeecherWPF"
+             xmlns:local="clr-namespace:BotLeecherWPF"
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
              mc:Ignorable="d" 
@@ -32,5 +32,6 @@
             <ComboBox Margin="5,6,5,3" Grid.Column="3" Grid.Row="0" ItemsSource="{Binding Path=UserList}" SelectedIndex="0" SelectedValue="{Binding User, Mode=OneWayToSource}"/>
             <mui:ModernButton Name="Use" Grid.Column="3" Grid.Row="2" Content="{lex:Loc}" Command="{Binding Path=ListCommand}"/>
         </Grid>
+        <local:LogPanel x:Name="logPanel" />
     </StackPanel>
 </UserControl>

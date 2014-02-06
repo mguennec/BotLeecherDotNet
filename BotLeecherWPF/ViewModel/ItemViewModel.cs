@@ -25,7 +25,7 @@ namespace BotLeecherWPF.ViewModel
     {
         private string name;
         private string filter = "";
-        private ObservableCollection<Pack> packs = new ObservableCollection<Pack>();
+        private RangeObservableCollection<Pack> packs = new RangeObservableCollection<Pack>();
         private DownloadState state = new DownloadState();
         private BotMediator BotMediator;
         private EventMediatorService Service;
@@ -33,7 +33,7 @@ namespace BotLeecherWPF.ViewModel
         private ICommand refreshCommand;
         private ICommand cancelCommand;
         private ICollectionView _collectionView;
-        private SynchronizationContext context;
+        private Dispatcher context = Dispatcher.CurrentDispatcher;
 
         public ICommand DlCommand
         {
@@ -115,16 +115,14 @@ namespace BotLeecherWPF.ViewModel
 
         public void SetPacks(IList<Pack> packs)
         {
-            context = context ?? SynchronizationContext.Current;
-            context.Send(x =>
-            {
-                var packList = (IList<Pack>) x;
-                this.packs.Clear();
-                foreach (var pack in packList)
-                {
-                    this.packs.Add(pack);
-                }
-            }, packs);
+            context = context ?? Dispatcher.CurrentDispatcher;
+
+            context.Invoke(DispatcherPriority.Normal, new Action<IList<Pack>>(ChangePackList), packs); 
+        }
+
+        private void ChangePackList(IList<Pack> packList)
+        {
+            this.packs.ChangeData(packList);
         }
 
         public void GetPack(Pack pack)
@@ -153,7 +151,7 @@ namespace BotLeecherWPF.ViewModel
             private set;
         }
 
-        public ObservableCollection<Pack> Packs
+        public RangeObservableCollection<Pack> Packs
         {
             get
             {

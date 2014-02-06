@@ -25,7 +25,7 @@ namespace BotLeecherWPF.Bootstrapper
         protected override void InitializeShell()
         {
             base.InitializeShell();
-            Application.Current.MainWindow = (Shell) CreateShell();
+            //Application.Current.MainWindow = (Shell) CreateShell();
             InitializeCultures();
         }
 

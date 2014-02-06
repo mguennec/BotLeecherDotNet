@@ -31,8 +31,8 @@ namespace BotLeecherWPF
             this.DataContext = vm;
         }
         public BotMain()
+            : this(ServiceLocator.Current.GetInstance<MainViewModel>())
         {
-            this.DataContext = ServiceLocator.Current.GetInstance <MainViewModel>();
         }
 
     }
