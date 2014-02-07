@@ -135,6 +135,9 @@
   <data name="Id" xml:space="preserve">
     <value>Id</value>
   </data>
+  <data name="Keywords" xml:space="preserve">
+    <value>Mots-clé</value>
+  </data>
   <data name="Log" xml:space="preserve">
     <value>Journal</value>
   </data>
@@ -144,8 +147,14 @@
   <data name="Name" xml:space="preserve">
     <value>Nom</value>
   </data>
+  <data name="Nicks" xml:space="preserve">
+    <value>Pseudos</value>
+  </data>
   <data name="Refresh" xml:space="preserve">
     <value>Actualiser</value>
+  </data>
+  <data name="SaveFolder" xml:space="preserve">
+    <value>Dossier de téléchargement</value>
   </data>
   <data name="Server" xml:space="preserve">
     <value>Serveur</value>

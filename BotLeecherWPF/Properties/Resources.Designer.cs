@@ -125,6 +125,15 @@ namespace BotLeecherWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Keywords.
+        /// </summary>
+        internal static string Keywords {
+            get {
+                return ResourceManager.GetString("Keywords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log.
         /// </summary>
         internal static string Log {
@@ -152,11 +161,29 @@ namespace BotLeecherWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Nicks.
+        /// </summary>
+        internal static string Nicks {
+            get {
+                return ResourceManager.GetString("Nicks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         internal static string Refresh {
             get {
                 return ResourceManager.GetString("Refresh", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SaveFolder.
+        /// </summary>
+        internal static string SaveFolder {
+            get {
+                return ResourceManager.GetString("SaveFolder", resourceCulture);
             }
         }
         

@@ -18,6 +18,7 @@
         <mui:LinkGroup DisplayName="BotLeecher" >
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="Main" Source="/BotMain.xaml"  />
+                <mui:Link DisplayName="Settings" Source="/Settings.xaml"  />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>
