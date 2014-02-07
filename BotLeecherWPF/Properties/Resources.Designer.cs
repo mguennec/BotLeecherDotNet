@@ -79,6 +79,15 @@ namespace BotLeecherWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ....
+        /// </summary>
+        internal static string ChooseDir {
+            get {
+                return ResourceManager.GetString("ChooseDir", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         internal static string Connect {

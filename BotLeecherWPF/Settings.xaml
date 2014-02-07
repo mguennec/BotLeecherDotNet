@@ -15,11 +15,13 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" MinWidth="65" />
             <ColumnDefinition Width="Auto" MinWidth="65" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <Label Name="Nicks" Content="{lex:Loc}" VerticalAlignment="Center" Grid.Row="0" Grid.Column="0" />
         <TextBox Name="NickText" Text="{Binding Nicks, Mode=TwoWay}" Grid.Row="0" Grid.Column="1" Width="200" Margin="0,5" />
         <Label Name="SaveFolder" Content="{lex:Loc}" VerticalAlignment="Center" Grid.Row="1" Grid.Column="0" />
         <TextBox Name="SaveFolderText" Text="{Binding SaveFolder, Mode=TwoWay}" Grid.Row="1" Grid.Column="1" Width="200" Margin="0,5"/>
+        <Button Name="ChooseDir" Content="{lex:Loc}" Grid.Row="1" Grid.Column="2" Command="{Binding Path=ChooseSaveDirCommand}" Margin="5,0" />
         <Label Name="Keywords" Content="{lex:Loc}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
         <TextBox Name="KeywordsText" Text="{Binding Keywords, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Width="200" Margin="0,5"/>
     </Grid>

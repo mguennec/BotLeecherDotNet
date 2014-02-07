@@ -123,6 +123,9 @@
   <data name="Channel" xml:space="preserve">
     <value>Channel</value>
   </data>
+  <data name="ChooseDir" xml:space="preserve">
+    <value>...</value>
+  </data>
   <data name="Connect" xml:space="preserve">
     <value>Connect</value>
   </data>

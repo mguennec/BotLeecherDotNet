@@ -5,6 +5,8 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Input;
 using WPFGenerics;
 
 namespace BotLeecherWPF.ViewModel
@@ -13,11 +15,20 @@ namespace BotLeecherWPF.ViewModel
     public class SettingsViewModel : ViewModelBase
     {
         private BotMediator _mediator;
+        private ICommand _chooseSaveDirCommand;
 
         [ImportingConstructor]
         public SettingsViewModel(BotMediator mediator)
         {
             this._mediator = mediator;
+        }
+
+        public ICommand ChooseSaveDirCommand
+        {
+            get
+            {
+                return _chooseSaveDirCommand ?? (_chooseSaveDirCommand = new CommandHandler(ChooseSaveDir, true));
+            }
         }
 
         public string Nicks
@@ -55,6 +66,18 @@ namespace BotLeecherWPF.ViewModel
             set
             {
                 _mediator.SetSaveDir(value);
+                OnPropertyChanged("SaveFolder");
+            }
+        }
+
+        private void ChooseSaveDir()
+        {
+            var dialog = new FolderBrowserDialog();
+            dialog.SelectedPath = SaveFolder;
+            var result = dialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                SaveFolder = dialog.SelectedPath;
             }
         }
     }
