@@ -29,6 +29,7 @@ namespace BotLeecherWPF.ViewModel
         private DownloadState state = new DownloadState();
         private BotMediator BotMediator;
         private EventMediatorService Service;
+        private ICommand viewCommand;
         private ICommand dlCommand;
         private ICommand refreshCommand;
         private ICommand cancelCommand;
@@ -42,6 +43,14 @@ namespace BotLeecherWPF.ViewModel
                 return dlCommand ?? (dlCommand = new CommandHandler<Pack>(GetPack, true));
             }
         }
+        public ICommand ViewCommand
+        {
+            get
+            {
+                return viewCommand ?? (viewCommand = new CommandHandler<Pack>(View, true));
+            }
+        }
+
 
         public ICommand RefreshCommand
         {
@@ -139,7 +148,11 @@ namespace BotLeecherWPF.ViewModel
             Task.Factory.StartNew(() => GetList(true), TaskCreationOptions.LongRunning);
         }
 
-
+        private void View(Pack pack)
+        {
+            Task.Factory.StartNew(() => BotMediator.LaunchPlayer(pack.Name), TaskCreationOptions.LongRunning);
+        }
+        
         public void GetList(bool refresh)
         {
             BotMediator.GetList(name, refresh);

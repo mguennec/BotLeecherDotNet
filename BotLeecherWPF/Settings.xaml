@@ -6,8 +6,10 @@
              xmlns:lex="http://wpflocalizeextension.codeplex.com"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid>
+    <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
         <Grid.RowDefinitions>
+            <RowDefinition Height="30" />
+            <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
             <RowDefinition Height="30" />
@@ -24,5 +26,10 @@
         <Button Name="ChooseDir" Content="{lex:Loc}" Grid.Row="1" Grid.Column="2" Command="{Binding Path=ChooseSaveDirCommand}" Margin="5,0" />
         <Label Name="Keywords" Content="{lex:Loc}" VerticalAlignment="Center" Grid.Row="2" Grid.Column="0" />
         <TextBox Name="KeywordsText" Text="{Binding Keywords, Mode=TwoWay}" Grid.Row="2" Grid.Column="1" Width="200" Margin="0,5"/>
+        <Label Name="Player" Content="{lex:Loc}" VerticalAlignment="Center" Grid.Row="3" Grid.Column="0" />
+        <TextBox Name="PlayerText" Text="{Binding Player, Mode=TwoWay}" Grid.Row="3" Grid.Column="1" Width="200" Margin="0,5"/>
+        <Button Name="ChoosePlayer" Content="{lex:Loc}" Grid.Row="3" Grid.Column="2" Command="{Binding Path=ChoosePlayerCommand}" Margin="5,0" />
+        <Label Name="PlayerOptions" Content="{lex:Loc}" VerticalAlignment="Center" Grid.Row="4" Grid.Column="0" />
+        <TextBox Name="PlayerOptionsText" Text="{Binding PlayerOptions, Mode=TwoWay}" Grid.Row="4" Grid.Column="1" Width="200" Margin="0,5"/>
     </Grid>
 </UserControl>

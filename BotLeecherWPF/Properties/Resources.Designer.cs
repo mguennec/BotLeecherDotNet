@@ -88,6 +88,15 @@ namespace BotLeecherWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to ....
+        /// </summary>
+        internal static string ChoosePlayer {
+            get {
+                return ResourceManager.GetString("ChoosePlayer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Connect.
         /// </summary>
         internal static string Connect {
@@ -179,6 +188,24 @@ namespace BotLeecherWPF.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Player.
+        /// </summary>
+        internal static string Player {
+            get {
+                return ResourceManager.GetString("Player", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Player Options.
+        /// </summary>
+        internal static string PlayerOptions {
+            get {
+                return ResourceManager.GetString("PlayerOptions", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Refresh.
         /// </summary>
         internal static string Refresh {
@@ -220,6 +247,15 @@ namespace BotLeecherWPF.Properties {
         internal static string Use {
             get {
                 return ResourceManager.GetString("Use", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to View.
+        /// </summary>
+        internal static string View {
+            get {
+                return ResourceManager.GetString("View", resourceCulture);
             }
         }
     }

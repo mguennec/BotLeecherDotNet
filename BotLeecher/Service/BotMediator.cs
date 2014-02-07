@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -52,6 +53,11 @@ namespace BotLeecher.Service
 
         public void WriteError(string text) {
             WriteText(text, MessageType.ERROR);
+        }
+
+        public void LaunchPlayer(string fileName)
+        {
+            Process.Start(GetPlayer(), GetPlayerOptions() + " \"" + GetSaveDir() + Path.DirectorySeparatorChar + fileName + "\"");
         }
 
         public void Disconnected(bool reconnect = false) {
@@ -208,12 +214,34 @@ namespace BotLeecher.Service
             Settings.Save(setting);
         }
 
-        public String GetSaveDir() {
+        public String GetSaveDir()
+        {
             return Settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue();
         }
 
-        public void SetSaveDir(string path) {
+        public void SetSaveDir(string path)
+        {
             Settings.Save(new Setting(SettingProperty.PROP_SAVEFOLDER, path));
+        }
+
+        public String GetPlayer()
+        {
+            return Settings.Get(SettingProperty.PROP_MEDIAPLAYER).GetFirstValue();
+        }
+
+        public void SetPlayer(string path)
+        {
+            Settings.Save(new Setting(SettingProperty.PROP_MEDIAPLAYER, path));
+        }
+
+        public String GetPlayerOptions()
+        {
+            return Settings.Get(SettingProperty.PROP_MEDIAPLAYER_OPTIONS).GetFirstValue();
+        }
+
+        public void SetPlayerOptions(string options)
+        {
+            Settings.Save(new Setting(SettingProperty.PROP_MEDIAPLAYER_OPTIONS, options));
         }
 
         public IList<String> GetNicks() {
@@ -279,6 +307,10 @@ namespace BotLeecher.Service
         public void Complete(User botName, string fileName)
         {
             Service.SendMessage("Download Complete:" + fileName, MessageType.DOWNLOAD);
+            if (!fileName.ToLower().EndsWith("txt"))
+            {
+                LaunchPlayer(fileName);
+            }
         }
 
         public void Beginning(User botName, string fileName)

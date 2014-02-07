@@ -13,6 +13,8 @@ namespace BotLeecher.Enums
         public IList<string> DefaultValue {get; set;}
 
         public static readonly SettingProperty PROP_SAVEFOLDER = new SettingProperty("savefolder", "C:\\Test");
+        public static readonly SettingProperty PROP_MEDIAPLAYER = new SettingProperty("player", "mpc-hc");
+        public static readonly SettingProperty PROP_MEDIAPLAYER_OPTIONS = new SettingProperty("playerOptions", "/add");
         public static readonly SettingProperty PROP_SERVER = new SettingProperty("servers", "irc.rizon.net");
         public static readonly SettingProperty PROP_CHANNEL = new SettingProperty("channels", "#exiled-destiny");
         public static readonly SettingProperty PROP_NICKS = new SettingProperty("nicks", "namekman", "namekmin", "namekman22");

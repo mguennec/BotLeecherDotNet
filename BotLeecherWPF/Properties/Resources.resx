@@ -126,6 +126,9 @@
   <data name="ChooseDir" xml:space="preserve">
     <value>...</value>
   </data>
+  <data name="ChoosePlayer" xml:space="preserve">
+    <value>...</value>
+  </data>
   <data name="Connect" xml:space="preserve">
     <value>Connect</value>
   </data>
@@ -157,6 +160,12 @@
   <data name="Nicks" xml:space="preserve">
     <value>Nicks</value>
   </data>
+  <data name="Player" xml:space="preserve">
+    <value>Player</value>
+  </data>
+  <data name="PlayerOptions" xml:space="preserve">
+    <value>Player Options</value>
+  </data>
   <data name="Refresh" xml:space="preserve">
     <value>Refresh</value>
   </data>
@@ -171,5 +180,8 @@
   </data>
   <data name="Use" xml:space="preserve">
     <value>Use this bot</value>
+  </data>
+  <data name="View" xml:space="preserve">
+    <value>View</value>
   </data>
 </root>
