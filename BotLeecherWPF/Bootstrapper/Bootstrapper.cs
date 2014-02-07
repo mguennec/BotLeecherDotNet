@@ -37,7 +37,6 @@ namespace BotLeecherWPF.Bootstrapper
             this.AggregateCatalog.Catalogs.Add(
                 new AssemblyCatalog(typeof(Bootstrapper).Assembly));
         }
-
         private void InitializeCultures()
         {
             if (!string.IsNullOrEmpty(BotLeecherWPF.Properties.Settings.Default.Culture))
@@ -49,5 +48,7 @@ namespace BotLeecherWPF.Bootstrapper
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(BotLeecherWPF.Properties.Settings.Default.UICulture);
             }
         }
+
     }
+
 }

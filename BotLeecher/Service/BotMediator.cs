@@ -54,7 +54,7 @@ namespace BotLeecher.Service
             WriteText(text, MessageType.ERROR);
         }
 
-        public void Disconnected() {
+        public void Disconnected(bool reconnect = false) {
             if (IrcConnection != null) {
                 var c = IrcConnection;
                 IrcConnection = null;
@@ -62,6 +62,10 @@ namespace BotLeecher.Service
                 Users.Clear();
                 Service.SendUserList(new List<string>());
                 WriteText("Disconnected");
+            }
+            if (reconnect)
+            {
+                ReConnect();
             }
         }
 
@@ -79,6 +83,7 @@ namespace BotLeecher.Service
             {
                 Users.Add(user.Nick, user);
             }
+            WriteText("User list received for " + channel);
             Service.SendUserList(new List<string>(Users.Keys));
         }
 
@@ -87,7 +92,7 @@ namespace BotLeecher.Service
          */
         public void OnDisconnect() {
             LOGGER.Info("DISCONNECT:\tDisconnected from server");
-            Disconnected();
+            Disconnected(true);
         }
 
         public BotMediator() {
@@ -97,22 +102,34 @@ namespace BotLeecher.Service
         /**
          * Connects to the irc network
          */
-        public void Connect(string server, string channel) {
+        public void Connect(string server, string channel, bool reconnect = false)
+        {
             if (IrcConnection != null) {
-                Disconnected();
+                Disconnected(reconnect);
             }
-            if (!GetServers().Contains(server)) {
-                AddServer(server);
+            if (!reconnect)
+            {
+                if (!GetServers().Contains(server))
+                {
+                    AddServer(server);
+                }
+                if (!GetChannels().Contains(channel))
+                {
+                    AddChannel(channel);
+                }
+                this.Server = server;
+                this.Channel = channel;
+                IrcConnection = new IrcConnection(NickProvider, BotLeecherFactory, this);
+                EventHandling();
+                ListAsked = true;
+                WriteText("Connection on " + this.Server + ":" + this.Channel);
+                IrcConnection.Connect();
             }
-            if (!GetChannels().Contains(channel)) {
-                AddChannel(channel);
-            }
-            this.Server = server;
-            this.Channel = channel;
-            IrcConnection = new IrcConnection(NickProvider, BotLeecherFactory, this);
-            EventHandling();
-            ListAsked = true;
-            IrcConnection.Connect();
+        }
+
+        public void ReConnect()
+        {
+            Connect(this.Server, this.Channel, true);
         }
 
         public void GetList(string user, bool refresh) {

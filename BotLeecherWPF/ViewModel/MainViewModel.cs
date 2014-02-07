@@ -1,6 +1,7 @@
 ﻿using BotLeecher.Service;
 using FirstFloor.ModernUI.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
+using Microsoft.WindowsAPICodePack.Taskbar;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -170,6 +171,11 @@ namespace BotLeecherWPF.ViewModel
             {
                 item.State.Name = e.FileName;
                 item.State.Progress = e.Completion;
+                
+                if (TaskbarManager.IsPlatformSupported)
+                {
+                    TaskbarManager.Instance.SetProgressValue(e.Completion, 100);
+                }
             }
         }
 
@@ -204,14 +210,6 @@ namespace BotLeecherWPF.ViewModel
                 }
                 tbi.ShowBalloonTip(Enum.GetName(typeof(MessageType), msg.Type), Log.Substring(0, Math.Min(Log.Length, 500)), icon);
             }, e);
-        }
-
-        private void CloseBalloon(object sender, System.Windows.RoutedEventArgs e)
-        {
-            if (e.Source is IDisposable) {
-                var disposable = ((IDisposable)e.Source);
-                disposable.Dispose();
-            }
         }
 
         private void OnUserList(object sender, Event.UserListEventArgs e)

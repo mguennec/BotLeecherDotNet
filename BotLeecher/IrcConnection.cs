@@ -40,31 +40,44 @@ namespace BotLeecher
             this.Listeners.Add(mediator);
             this.Mediator = mediator;
             base.Connected += JoinChannel;
-            base.Disconnected += Disconnected;
+            base.Disconnected += Disconnection;
         }
 
-        
+
         /**
          * @param user
          * @return
          */
-        public BotLeecher MakeLeecher(User user) {
-            BotLeecher leecher = BotLeecherFactory.GetBotLeecher(user, this);
-            Leechers.Add(user.Nick, leecher);
-            leecher.AddListener(Mediator);
-            leecher.Start();
+        public BotLeecher MakeLeecher(User user)
+        {
+            BotLeecher leecher = null;
+            if (user != null)
+            {
+                leecher = BotLeecherFactory.GetBotLeecher(user, this);
+                Leechers.Add(user.Nick, leecher);
+                leecher.AddListener(Mediator);
+                leecher.Start();
+            }
             return leecher;
+        }
+
+        /**
+         * @param user
+         * @return
+         */
+        public BotLeecher MakeLeecher(string user)
+        {
+            return MakeLeecher(Users.GetUser(user));
         }
         
         public void RemoveLeecher(string user) {
             BotLeecher leecher = Leechers[user];
             if (leecher != null) {
-                leecher.Stop();
                 Leechers.Remove(user);
             }
         }
 
-        public void Disconnected(object sender, EventArgs e)
+        public void Disconnection(object sender, EventArgs e)
         {
             foreach (string user in Leechers.Keys) {
                 RemoveLeecher(user);
@@ -108,7 +121,7 @@ namespace BotLeecher
          * @return
          */
         public BotLeecher GetBotLeecher(string botName) {
-            return Leechers.ContainsKey(botName)? Leechers[botName] : null;
+            return Leechers.ContainsKey(botName) ? Leechers[botName] : MakeLeecher(botName);
         }
 
         public List<BotLeecher> GetAllBots() {

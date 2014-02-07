@@ -230,11 +230,6 @@ namespace BotLeecher
             return state;
         }
 
-        public void Stop() {
-            Queue.Stop();
-            
-        }
-
         public void ChangeState(string name, PackStatus status) {
             if (PackList != null) {
                 ChangeState(PackList.GetByName(name), status);
@@ -267,7 +262,6 @@ namespace BotLeecher
 
             private bool Working = true;
             private bool Canceled = false;
-            private System.Timers.Timer Timer;
             private BlockingCollection<int> InternalQueue = new BlockingCollection<int>();
             private BotLeecher BotLeecher;
 
@@ -275,11 +269,6 @@ namespace BotLeecher
                 this.BotLeecher = botLeecher;
             }
 
-            public void Stop() {
-                Working = false;
-                Timer.Dispose();
-                Timer = null;
-            }
 
             public bool Add(int nr) {
                 bool retVal;
@@ -294,9 +283,6 @@ namespace BotLeecher
 
             public void Run() {
                 while (Working) {
-                    if (Timer == null) {
-                        StartWatcherThread();
-                    }
                     int nr = InternalQueue.Take();
                     AskPack(nr);
                 }
@@ -372,21 +358,6 @@ namespace BotLeecher
                 }
             }
             
-            private void Watch(object sender, ElapsedEventArgs e)
-            {
- 	            if (Working) {
-                    if (BotLeecher.CurrentTransfer != null) {
-                        BotLeecher.FireStatusEvent();
-                    }
-                }
-            } 
-            private void StartWatcherThread() {
-                if (Timer == null) {
-                    Timer = new System.Timers.Timer(5000);
-                    Timer.Elapsed += new ElapsedEventHandler(Watch);
-                    Timer.Enabled = true;
-                }
-            }
 
         }
     }

@@ -7,8 +7,6 @@
              mc:Ignorable="d"
              d:DesignHeight="300" d:DesignWidth="900">
     <ScrollViewer MinWidth="500" Height="500">
-       
-        <TextBlock
-                    Text="{Binding Log, Mode=OneWay}" />
+        <TextBlock Text="{Binding Log, Mode=OneWay}" />
     </ScrollViewer>
 </UserControl>

@@ -12,6 +12,6 @@ namespace BotLeecher
 
         void OnMessage(User user, string message);
 
-        void Disconnected();
+        void Disconnected(bool reconnect = false);
     }
 }
