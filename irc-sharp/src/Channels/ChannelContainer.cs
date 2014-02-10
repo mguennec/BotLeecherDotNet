@@ -204,7 +204,7 @@ namespace ircsharp
         public bool MoveNext()
         {
             _curr++;
-            if (_curr == channels.Count)
+            if (_curr >= channels.Count)
             {
                 Reset();
                 return false;

@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPFGenerics", "WPFGenerics\WPFGenerics.csproj", "{0EFFEA4F-C83F-42C7-80E7-DBD6115E7533}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BotLeecher", "BotLeecher\BotLeecher.csproj", "{AAA8BAF8-8A6B-467B-A6B2-B95952EE046C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E4E336E6-4103-4146-A312-B99D589C2BAC} = {E4E336E6-4103-4146-A312-B99D589C2BAC}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E73D4660-0F86-4763-BC8A-1C11D35AD1C7}"
 	ProjectSection(SolutionItems) = preProject

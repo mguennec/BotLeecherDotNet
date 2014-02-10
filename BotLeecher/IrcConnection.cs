@@ -1,4 +1,5 @@
 ﻿using BotLeecher.Service;
+using BotLeecher.Tools;
 using ircsharp;
 using System;
 using System.Collections.Concurrent;
@@ -20,6 +21,9 @@ namespace BotLeecher
 
         private BotMediator Mediator;
         private NicknameProvider NickProvider;
+        public bool IsConnected;
+
+        public event EventHandler OnConnectionEstablished;
         
 
         /**
@@ -38,6 +42,7 @@ namespace BotLeecher
             this.Leechers = new ConcurrentDictionary<string, BotLeecher>();
             this.Listeners = new List<IrcConnectionListener>();
             this.Listeners.Add(mediator);
+            this.IsConnected = false;
             this.Mediator = mediator;
             base.Connected += JoinChannel;
             base.Disconnected += Disconnection;
@@ -79,10 +84,11 @@ namespace BotLeecher
 
         public void Disconnection(object sender, EventArgs e)
         {
-            foreach (string user in Leechers.Keys) {
-                RemoveLeecher(user);
+            if (this.IsConnected)
+            {
+                this.IsConnected = false;
+                Mediator.OnDisconnect();
             }
-            Mediator.OnDisconnect();
         }
 
         public void Connect()
@@ -93,6 +99,13 @@ namespace BotLeecher
         {
             base.Channels.JoinComplete += OnChannelJoined;
             base.Channels.Join(Mediator.Channel);
+        }
+
+        public void Ping()
+        {
+            Server.RawSend("ping " + Mediator.Channel);
+            var waiter = new IrcEventWaiter(Server, "PingPong");
+            waiter.WaitForEvent(TimeSpan.FromSeconds(30));
         }
 
         private void OnChannelJoined(ircsharp.Connection sender, JoinCompleteEventArgs e)
@@ -106,6 +119,10 @@ namespace BotLeecher
             }
             Mediator.UserListLoaded(channel.Name, list);
             GetMessageReciever(channel.NetworkIdentifier).RecievedMessage += OnMessage;
+            this.IsConnected = true;
+            if (OnConnectionEstablished != null) {
+                OnConnectionEstablished(this, new EventArgs());
+            }
         }
 
         private void OnMessage(MessageReciever sender, MessageEventArgs e)

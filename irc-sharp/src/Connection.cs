@@ -311,7 +311,7 @@ namespace ircsharp
 			strHost = Host;
 			intPort = Port;
 
-			base.CurrentConnection.OnConnected += new EventHandler(onConnected);
+            base.CurrentConnection.OnConnected += new EventHandler(onConnected);
 			base.CurrentConnection.Connect(Host, Port);
 			base.CurrentConnection.OnConnectFailed += new EventHandler(onConnectFailed);
 			base.CurrentConnection.OnDisconnected += new EventHandler(onDisconnected);
@@ -445,7 +445,7 @@ namespace ircsharp
 						if (Connected!=null)
 							Connected(this, new EventArgs());
 					}
-					serverInfo.MessageOfTheDay = strMOTD.ToString();
+                    serverInfo.MessageOfTheDay = (strMOTD ?? new StringBuilder()).ToString();
 					strMOTD = null;
 					serverInfo.FireMessageOfTheDayUpdated(this);
 					break;
@@ -593,6 +593,10 @@ namespace ircsharp
 			}
 			else
 			{
+                if (e.Command.ToLower() == "pong")
+                {
+                    serverInfo.FirePingPong();
+                }
 				if (e.User==null)
 				{
 #region Direct Command Handling (eg. PING or ERROR)
@@ -602,7 +606,10 @@ namespace ircsharp
 					case "ping":
 						base.CurrentConnection.SendData("PONG :" + e.Parameters[0] , false);
 						serverInfo.FirePingPong();
-						break;
+                        break;
+                    case "pong":
+                        serverInfo.FirePingPong();
+                        break;
 #endregion
 #region ERROR
 					case "error":

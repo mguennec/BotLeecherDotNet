@@ -138,7 +138,7 @@ namespace ircsharp
 		public bool MoveNext()
 		{
 			_curr++;
-			if (_curr == users.Count)
+			if (_curr >= users.Count)
 			{
 				Reset();
 				return false;

@@ -41,6 +41,7 @@ namespace BotLeecher
         public DateTime StartTime { get; set; }
         public PackList PackList { get; set; }
         public String FileName { get; set; }
+        
 
         public BotLeecher(User user, IrcConnection connection, Settings settings, PackListReader packListReader)
         {
@@ -56,9 +57,10 @@ namespace BotLeecher
             this.ListRequested = false;
             this.Description = "";
             this.Listeners = new List<BotListener>();
-            this.Queue = new LeecherQueue(this);
+            this.Queue = QueueManager.GetQueue(this);
             user.DCCTransferRequested += OnDccTransfer;
         }
+
 
         public void RunQueue() {
             Task = new Task(() => {
@@ -263,7 +265,7 @@ namespace BotLeecher
             private bool Working = true;
             private bool Canceled = false;
             private BlockingCollection<int> InternalQueue = new BlockingCollection<int>();
-            private BotLeecher BotLeecher;
+            public BotLeecher BotLeecher;
 
             public LeecherQueue(BotLeecher botLeecher) {
                 this.BotLeecher = botLeecher;
@@ -288,7 +290,8 @@ namespace BotLeecher
                 }
             }
 
-            private void AskPack(int nr) {
+            private void AskPack(int nr)
+            {
                 if (Canceled) {
                     Canceled = false;
                     BotLeecher.ChangeState(nr, new PackStatus(PackStatus.Status.AVAILABLE));
@@ -360,5 +363,22 @@ namespace BotLeecher
             
 
         }
+        public class QueueManager
+        {
+            private static IDictionary<string, LeecherQueue> queues = new Dictionary<string, LeecherQueue>();
+
+
+            public static LeecherQueue GetQueue(BotLeecher leecher)
+            {
+                if (!queues.ContainsKey(leecher.BotUser.Nick))
+                {
+                    queues.Add(leecher.BotUser.Nick, new LeecherQueue(leecher));
+                }
+                var queue = queues[leecher.BotUser.Nick];
+                queue.BotLeecher = leecher;
+                return queue;
+            }
+        }
     }
+
 }

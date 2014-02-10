@@ -113,6 +113,7 @@
     <Compile Include="Service\SettingsNicknameProvider.cs" />
     <Compile Include="TextWriter.cs" />
     <Compile Include="Tools\EnumsUtils.cs" />
+    <Compile Include="Tools\EventWaiter.cs" />
     <Compile Include="Tools\FileTransfer.cs" />
     <Compile Include="Tools\ModelBase.cs" />
     <Compile Include="Tools\Properties.cs" />

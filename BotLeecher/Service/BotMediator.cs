@@ -12,19 +12,31 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace BotLeecher.Service
 {
     [Export]
     public class BotMediator : IrcConnectionListener, TextWriter, BotListener {
         private static readonly ILog LOGGER = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private IrcConnection IrcConnection;
+        private IrcConnection _ircConnection;
         private NicknameProvider NickProvider;
         private BotLeecherFactory BotLeecherFactory;
         private Settings Settings;
 
         public string Server { get; set; }
         public string Channel { get; set; }
+        private IrcConnection IrcConnection
+        {
+            get
+            {
+                return _ircConnection ?? (_ircConnection = new IrcConnection(NickProvider, BotLeecherFactory, this));
+            }
+            set
+            {
+                _ircConnection = value;
+            }
+        }
         public IDictionary<string, User> Users { get; set; }
         private EventMediatorService Service;
         private bool ListAsked;
@@ -36,7 +48,15 @@ namespace BotLeecher.Service
             this.Settings = settings;
             this.Service = service;
             this.Users = new Dictionary<string, User>();
-        }    
+            var timer = new Timer(10000);
+            timer.Elapsed += VerifyConnection;
+            timer.Start();
+        }
+
+        private void VerifyConnection(object sender, ElapsedEventArgs e)
+        {
+            IrcConnection.Ping();
+        }
 
         private void EventHandling() {
             //IrcConnection.GotNameListReply += OnUserList;
@@ -61,22 +81,22 @@ namespace BotLeecher.Service
         }
 
         public void Disconnected(bool reconnect = false) {
-            if (IrcConnection != null) {
-                var c = IrcConnection;
-                IrcConnection = null;
-                c.Disconnect();
-                Users.Clear();
+            if (IrcConnection != null)
+            {
                 Service.SendUserList(new List<string>());
-                WriteText("Disconnected");
+                Users.Clear();
+                IrcConnection.Disconnect();
+                IrcConnection = null;
             }
             if (reconnect)
             {
+                WriteText("Disconnected");
                 ReConnect();
             }
         }
 
         public List<BotLeecher> GetAllBots() {
-            return IrcConnection == null ? new List<BotLeecher>() : IrcConnection.GetAllBots();
+            return IrcConnection.GetAllBots();
         }
 
         public void UserListLoaded(string channel, IList<User> users) {
@@ -87,7 +107,7 @@ namespace BotLeecher.Service
             }
             foreach (User user in users)
             {
-                Users.Add(user.Nick, user);
+                Users[user.Nick] = user;
             }
             WriteText("User list received for " + channel);
             Service.SendUserList(new List<string>(Users.Keys));
@@ -125,7 +145,6 @@ namespace BotLeecher.Service
                 }
                 this.Server = server;
                 this.Channel = channel;
-                IrcConnection = new IrcConnection(NickProvider, BotLeecherFactory, this);
                 EventHandling();
                 ListAsked = true;
                 WriteText("Connection on " + this.Server + ":" + this.Channel);
@@ -135,10 +154,12 @@ namespace BotLeecher.Service
 
         public void ReConnect()
         {
-            Connect(this.Server, this.Channel, true);
+            Connect(this.Server, this.Channel);
         }
 
-        public void GetList(string user, bool refresh) {
+        public void GetList(string user, bool refresh)
+        {
+            IrcConnection.Ping();
             BotLeecher botLeecher = IrcConnection.GetBotLeecher(user);
             if (botLeecher == null) {
                 CreateLeecher(user);
@@ -165,7 +186,9 @@ namespace BotLeecher.Service
             return packs;
         }
 
-        public void GetPack(string user, int pack) {
+        public void GetPack(string user, int pack)
+        {
+            IrcConnection.Ping();
             BotLeecher botLeecher = IrcConnection.GetBotLeecher(user);
             if (botLeecher != null) {
                 WriteText(user + " : Sending Request for pack #" + pack, MessageType.REQUEST);
