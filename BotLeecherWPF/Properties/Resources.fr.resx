@@ -145,7 +145,7 @@
     <value>Journal</value>
   </data>
   <data name="Main" xml:space="preserve">
-    <value>Main</value>
+    <value>Connexion</value>
   </data>
   <data name="Name" xml:space="preserve">
     <value>Nom</value>
@@ -161,6 +161,9 @@
   </data>
   <data name="Server" xml:space="preserve">
     <value>Serveur</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Paramètres</value>
   </data>
   <data name="Size" xml:space="preserve">
     <value>Taille (K)</value>

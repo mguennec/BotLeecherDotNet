@@ -1,8 +1,10 @@
 ﻿<Application x:Class="BotLeecherWPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             StartupUri="Shell.xaml"
+             Startup="OnStartup"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:local="clr-namespace:BotLeecherWPF"
              d1p1:Ignorable="d"
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
   <Application.Resources>
@@ -10,7 +12,21 @@
       <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
-      </ResourceDictionary.MergedDictionaries>
-    </ResourceDictionary>
-  </Application.Resources>
+            </ResourceDictionary.MergedDictionaries>
+            <!-- WPF 4.0 workaround -->
+            <Style TargetType="{x:Type Rectangle}" />
+            <!-- end of workaround -->
+
+            <Style TargetType="mui:ModernFrame">
+                <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
+            </Style>
+            <Style TargetType="mui:ModernTab">
+                <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
+            </Style>
+            <Style TargetType="local:Shell">
+                <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
+            </Style>
+        </ResourceDictionary>
+
+    </Application.Resources>
 </Application>

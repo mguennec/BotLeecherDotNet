@@ -64,6 +64,10 @@
     <Reference Include="Hardcodet.Wpf.TaskbarNotification">
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net45\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\packages\Prism.4.1.0.0\lib\NET40\Microsoft.Expression.Interactions.dll</HintPath>
     </Reference>
@@ -92,6 +96,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -121,11 +126,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Bootstrapper\Bootstrapper.cs" />
+    <Compile Include="Bootstrapper\IContentMetadata.cs" />
+    <Compile Include="Bootstrapper\MefContentLoaderService.cs" />
     <Compile Include="BotMain.xaml.cs">
       <DependentUpon>BotMain.xaml</DependentUpon>
     </Compile>
     <Compile Include="DataPager.xaml.cs">
       <DependentUpon>DataPager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Links\SettingsTitleLinks.xaml.cs">
+      <DependentUpon>SettingsTitleLinks.xaml</DependentUpon>
     </Compile>
     <Compile Include="LogPanel.xaml.cs">
       <DependentUpon>LogPanel.xaml</DependentUpon>
@@ -134,6 +144,7 @@
     <Compile Include="BotPanel.xaml.cs">
       <DependentUpon>BotPanel.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Properties\AssemblyInfo.log.cs" />
     <Compile Include="Properties\Resources.fr.Designer.cs">
       <DependentUpon>Resources.fr.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -145,6 +156,7 @@
     <Compile Include="ViewModel\ItemViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\ShellViewModel.cs" />
     <Page Include="BotMain.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -152,6 +164,10 @@
     <Page Include="DataPager.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Links\SettingsTitleLinks.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="LogPanel.xaml">
       <SubType>Designer</SubType>

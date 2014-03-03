@@ -31,8 +31,8 @@
             <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=State.Name}" />
         </Grid>
         <my:DataPager x:Name="dataPager" ItemsPerPage="50"  HorizontalAlignment="Center" Padding="0, 0, 0, 10"></my:DataPager>
-        <ScrollViewer HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" MaxHeight="500">
-            <DataGrid x:Name="packGrid" ItemsSource="{Binding ElementName=dataPager, Path=CurrentPage}" CanUserAddRows="False" HorizontalAlignment="Center" IsReadOnly="True">
+        <ScrollViewer HorizontalContentAlignment="Center" HorizontalAlignment="Center" Margin="0,0,0,0" MaxHeight="500" x:Name="scroll">
+            <DataGrid x:Name="packGrid" ItemsSource="{Binding ElementName=dataPager, Path=CurrentPage}" CanUserAddRows="False" HorizontalAlignment="Center" IsReadOnly="True" PreviewMouseWheel="packGrid_PreviewMouseWheel">
                 <DataGrid.Columns>
                     <DataGridTemplateColumn Header="Dl" Width="SizeToCells" IsReadOnly="True">
                         <DataGridTemplateColumn.CellTemplate>

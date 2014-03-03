@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using log4net.Config;
 
 namespace BotLeecherWPF
 {
@@ -12,9 +13,11 @@ namespace BotLeecherWPF
     /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application {
-        protected override void OnStartup(StartupEventArgs e)
+        protected void OnStartup(object sender, StartupEventArgs e)
         {
-            base.OnStartup(e);
+            // Configure Log4Net
+            XmlConfigurator.Configure();
+
             Bootstrapper.Bootstrapper bootstrapper = new Bootstrapper.Bootstrapper();
             bootstrapper.Run();
         }

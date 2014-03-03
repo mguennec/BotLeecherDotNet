@@ -101,7 +101,7 @@ namespace BotLeecherWPF.ViewModel
                 wnd.MenuLinkGroups.First<LinkGroup>().Links.Add(new Link
                 {
                     DisplayName = this.Name,
-                    Source = new Uri(Uri.EscapeUriString("/BotPanel.xaml?Name=" + this.Name), UriKind.Relative)
+                    Source = new Uri(Uri.EscapeUriString("/BotPanel?Name=" + this.Name), UriKind.Relative)
                 });
             }));
             //AddMockData();

@@ -115,9 +115,12 @@
     <Compile Include="Tools\EnumsUtils.cs" />
     <Compile Include="Tools\EventWaiter.cs" />
     <Compile Include="Tools\FileTransfer.cs" />
+    <Compile Include="Tools\ILogger.cs" />
+    <Compile Include="Tools\Logger.cs" />
     <Compile Include="Tools\ModelBase.cs" />
     <Compile Include="Tools\Properties.cs" />
     <Compile Include="Tools\PropertiesLoader.cs" />
+    <Compile Include="Tools\PropertyHelper.cs" />
     <Compile Include="Tools\ReceiveFileTransfer.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +136,11 @@
       <Project>{e4e336e6-4103-4146-a312-b99d589c2bac}</Project>
       <Name>irc-sharp</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\Log\log4net.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

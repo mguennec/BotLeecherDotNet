@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -17,18 +18,20 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFGenerics;
 
 namespace BotLeecherWPF
 {
     /// <summary>
     /// Interaction logic for BotPanel.xaml
     /// </summary>
-    /// 
+    ///
+    [Content("/BotPanel")]
     public partial class BotPanel : UserControl, IContent
     {
         public BotPanel()
         {
-
+            InitializeComponent();
         }
 
         public void OnFragmentNavigation(FirstFloor.ModernUI.Windows.Navigation.FragmentNavigationEventArgs e)
@@ -41,10 +44,9 @@ namespace BotLeecherWPF
 
         public void OnNavigatedTo(FirstFloor.ModernUI.Windows.Navigation.NavigationEventArgs e)
         {
-            var source = Uri.UnescapeDataString(e.Source.ToString());
-            if (source.Contains("Name="))
+            var name = HttpUtility.ParseQueryString(e.Source.OriginalString.Substring(e.Source.OriginalString.IndexOf('?') + 1)).Get("Name");
+            if (!string.IsNullOrWhiteSpace(name))
             {
-                var name = source.Substring(source.IndexOf("Name=") + 5);
                 this.DataContext = ServiceLocator.Current.GetInstance<MainViewModel>().GetItem(name);
                 dataPager.ItemsSource = ((ItemViewModel)this.DataContext).Packs;
             }
@@ -52,6 +54,11 @@ namespace BotLeecherWPF
 
         public void OnNavigatingFrom(FirstFloor.ModernUI.Windows.Navigation.NavigatingCancelEventArgs e)
         {
+        }
+
+        private void packGrid_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            scroll.ScrollToVerticalOffset(scroll.VerticalOffset - e.Delta / 3);
         }
     }
 }

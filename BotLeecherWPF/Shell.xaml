@@ -8,7 +8,7 @@
     lex:LocalizeDictionary.DesignCulture="en-US"
     lex:ResxLocalizationProvider.DefaultAssembly="BotLeecherWPF"
     lex:ResxLocalizationProvider.DefaultDictionary="Resources"
-    Title="BotLeecher" Height="900" Width="1200">
+    Title="BotLeecher" Height="900" Width="1200" TitleLinks="{Binding TitleLinks, Mode=TwoWay}">
     <mui:ModernWindow.Resources>
         <Style TargetType="mui:TransitioningContentControl">
             <Setter Property="Transition" Value="ModernUITransition" />
@@ -17,8 +17,7 @@
     <mui:ModernWindow.MenuLinkGroups>
         <mui:LinkGroup DisplayName="BotLeecher" >
             <mui:LinkGroup.Links>
-                <mui:Link DisplayName="Main" Source="/BotMain.xaml"  />
-                <mui:Link DisplayName="Settings" Source="/Settings.xaml"  />
+                <mui:Link x:Name="Main" Source="/BotMain"  />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

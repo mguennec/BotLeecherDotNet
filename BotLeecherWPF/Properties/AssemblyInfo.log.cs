@@ -1,0 +1,1 @@
+﻿[assembly: log4net.Config.XmlConfigurator(ConfigFile = ".\\Config\\Log\\log4net.config", Watch = true)]

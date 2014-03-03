@@ -1,8 +1,5 @@
 ﻿using BotLeecher.Tools;
-using BotLeecherWPF.ViewModel;
 using FirstFloor.ModernUI.Presentation;
-using FirstFloor.ModernUI.Windows.Controls;
-using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -20,33 +17,28 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFLocalizeExtension.Extensions;
 
-namespace BotLeecherWPF
+namespace BotLeecherWPF.Links
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for SettingsTitleLinks.xaml
     /// </summary>
     [Export]
-    public partial class Shell : ModernWindow
+    public partial class SettingsTitleLinks : Link
     {
-        [ImportingConstructor]
-        public Shell(ShellViewModel vm)
+        public SettingsTitleLinks()
         {
-            this.DataContext = vm;
             InitializeComponent();
-
             SetBindings();
         }
 
         private void SetBindings()
         {
-            var assembly = typeof(Shell).Assembly.FullName;
+            var assembly = typeof(SettingsTitleLinks).Assembly.FullName;
             var dictionary = "Resources";
 
-            var loc = new LocExtension(string.Concat(assembly, ":", dictionary, ":", "Main"));
+            var LinkSettingsLoc = new LocExtension(string.Concat(assembly, ":", dictionary, ":", "Settings"));
             var lDisplayNamepi = PropertyHelper<Link>.GetProperty(x => x.DisplayName);
-            loc.SetBinding(Main, lDisplayNamepi);
+            LinkSettingsLoc.SetBinding(linkSettings, lDisplayNamepi);
         }
     }
-
-    
 }

@@ -1,4 +1,5 @@
 ﻿using BotLeecherWPF.ViewModel;
+using FirstFloor.ModernUI.Windows;
 using Microsoft.Practices.ServiceLocation;
 using System;
 using System.Collections.Generic;
@@ -15,13 +16,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFGenerics;
 
 namespace BotLeecherWPF
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Settings : UserControl
+    [Content("/Settings")]
+    public partial class Settings : UserControl, IContent
     {
         
         [ImportingConstructor]
@@ -31,10 +34,20 @@ namespace BotLeecherWPF
             this.InitializeComponent();
         }
 
-        public Settings()
-            : this(ServiceLocator.Current.GetInstance<SettingsViewModel>())
+        public void OnFragmentNavigation(FirstFloor.ModernUI.Windows.Navigation.FragmentNavigationEventArgs e)
         {
-            
+        }
+
+        public void OnNavigatedFrom(FirstFloor.ModernUI.Windows.Navigation.NavigationEventArgs e)
+        {
+        }
+
+        public void OnNavigatedTo(FirstFloor.ModernUI.Windows.Navigation.NavigationEventArgs e)
+        {
+        }
+
+        public void OnNavigatingFrom(FirstFloor.ModernUI.Windows.Navigation.NavigatingCancelEventArgs e)
+        {
         }
     }
 }

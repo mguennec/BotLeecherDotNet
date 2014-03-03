@@ -1,5 +1,7 @@
 ﻿using BotLeecher.Service.Properties;
+using BotLeecher.Tools;
 using BotLeecherWPF.ViewModel;
+using Microsoft.Practices.Prism.Logging;
 using Microsoft.Practices.Prism.MefExtensions;
 using Microsoft.Practices.ServiceLocation;
 using System;
@@ -19,14 +21,19 @@ namespace BotLeecherWPF.Bootstrapper
     {
         protected override System.Windows.DependencyObject CreateShell()
         {
-            return this.Container.GetExportedValue<Shell>();
+            // retrieve the MefContentLoader export and assign to global resources (so {DynamicResource MefContentLoader} can be resolved)
+            var contentLoader = this.Container.GetExportedValue<MefContentLoaderService>();
+            System.Windows.Application.Current.Resources.Add("MefContentLoader", contentLoader);
+
+            return this.Container.GetExportedValue<Shell>() as Window;
         }
 
         protected override void InitializeShell()
         {
             base.InitializeShell();
-            //Application.Current.MainWindow = (Shell) CreateShell();
             InitializeCultures();
+            System.Windows.Application.Current.MainWindow = (Window) this.Shell;
+            System.Windows.Application.Current.MainWindow.Show();
         }
 
         protected override void ConfigureAggregateCatalog()
@@ -47,6 +54,11 @@ namespace BotLeecherWPF.Bootstrapper
             {
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo(BotLeecherWPF.Properties.Settings.Default.UICulture);
             }
+        }
+
+        protected override ILoggerFacade CreateLogger()
+        {
+            return new Logger();
         }
 
     }

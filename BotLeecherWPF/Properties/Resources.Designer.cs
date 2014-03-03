@@ -161,7 +161,7 @@ namespace BotLeecherWPF.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Main.
+        ///   Looks up a localized string similar to Connection.
         /// </summary>
         internal static string Main {
             get {
@@ -229,6 +229,15 @@ namespace BotLeecherWPF.Properties {
         internal static string Server {
             get {
                 return ResourceManager.GetString("Server", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        internal static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
             }
         }
         

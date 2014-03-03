@@ -112,7 +112,15 @@ namespace BotLeecherWPF.ViewModel
 
             tbi.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BotLeecherWPF.Resources.PerfCenterCpl.ico"));
             tbi.Visibility = System.Windows.Visibility.Visible;
+            Dispatcher.CurrentDispatcher.ShutdownStarted += DisposeTask;
+        }
 
+        private void DisposeTask(object sender, EventArgs e)
+        {
+            if (tbi != null && !tbi.IsDisposed)
+            {
+                tbi.Dispose();
+            }
         }
 
         public void GetList()

@@ -374,6 +374,11 @@ namespace BotLeecher
                 {
                     queues.Add(leecher.BotUser.Nick, new LeecherQueue(leecher));
                 }
+                var query = queues.Join(queues,
+                                 post => post.Key,
+                                 meta => meta.Key,
+                                 (post, meta) => new { Post = post, Meta = meta });
+                
                 var queue = queues[leecher.BotUser.Nick];
                 queue.BotLeecher = leecher;
                 return queue;
