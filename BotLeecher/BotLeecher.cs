@@ -170,13 +170,6 @@ namespace BotLeecher
             FileName = null;
         }
 
-        private void FireComplete()
-        {
-            foreach (BotListener listener in Listeners)
-            {
-                listener.Complete(BotUser, FileName);
-            }
-        }
 
         private void OnTransferProgress(DCCTransfer sender, DCCTransferProgressEventArgs e)
         {
@@ -184,6 +177,7 @@ namespace BotLeecher
         }
         
         private void DownloadFinished(string fileName) {
+            File.Move(CurrentTransfer.LocalFile, GetFileName(CurrentTransfer.RemoteFile));
             ChangeState(fileName, new PackStatus(PackStatus.Status.DOWNLOADED));
             LOGGER.Info("FINISHED:\t Transfer finished for " + fileName);
         }
@@ -260,6 +254,26 @@ namespace BotLeecher
             return progress;
         }
 
+        public String GetTmpFileName(string fileName)
+        {
+            return string.Concat(fileName, ".tmp");
+        }
+
+        private string GetFileName(string fileName)
+        {
+            var path = Settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue();
+            return path + Path.DirectorySeparatorChar + fileName;
+        }
+
+        private void FireComplete()
+        {
+            foreach (BotListener listener in Listeners)
+            {
+                listener.Complete(BotUser, FileName);
+            }
+        }
+
+
         public class LeecherQueue {
 
             private bool Working = true;
@@ -326,20 +340,14 @@ namespace BotLeecher
                         try {
                             BotLeecher.Downloading = true;
                             BotLeecher.StartTime = DateTime.Now;
-                            BotLeecher.CurrentTransfer.Accept(GetFileName(BotLeecher.CurrentTransfer.RemoteFile));
+                            BotLeecher.CurrentTransfer.Accept(BotLeecher.GetTmpFileName(BotLeecher.GetFileName(BotLeecher.CurrentTransfer.RemoteFile)));
                         } catch (IOException e) {
                             BotLeecher.ChangeState(BotLeecher.CurrentTransfer.RemoteFile, new PackStatus(PackStatus.Status.AVAILABLE));
-                            File.Delete(BotLeecher.CurrentTransfer.RemoteFile);
+                            File.Delete(BotLeecher.GetTmpFileName(BotLeecher.GetFileName(BotLeecher.CurrentTransfer.RemoteFile)));
                             LOGGER.Error(e.Message, e);
                         }
                     }
                 }
-            }
-
-            private string GetFileName(string fileName)
-            {
-                var path = BotLeecher.Settings.Get(SettingProperty.PROP_SAVEFOLDER).GetFirstValue();
-                return path + Path.DirectorySeparatorChar + fileName;
             }
 
             public void Cancel() {

@@ -322,14 +322,14 @@ namespace BotLeecher.Service
             Service.SendTransferStatus(botName, fileName, completion);
         }
 
-        public void Failure(User botName, string fileName)
+        public void Failure(User bot, string fileName)
         {
-            Service.SendMessage("Download Failed:" + fileName, MessageType.ERROR);
+            Service.SendTransferFailed(bot.Nick, fileName);
         }
 
-        public void Complete(User botName, string fileName)
+        public void Complete(User bot, string fileName)
         {
-            Service.SendMessage("Download Complete:" + fileName, MessageType.DOWNLOAD);
+            Service.SendTransferComplete(bot.Nick, fileName);
             if (!fileName.ToLower().EndsWith("txt"))
             {
                 LaunchPlayer(fileName);

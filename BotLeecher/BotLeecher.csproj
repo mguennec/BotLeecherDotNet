@@ -94,6 +94,7 @@
     <Compile Include="Enums\StorageType.cs" />
     <Compile Include="Event\MessageEventArgs.cs" />
     <Compile Include="Event\PackEventArgs.cs" />
+    <Compile Include="Event\TransferEndEventArgs.cs" />
     <Compile Include="Event\TransferStatusEventArgs.cs" />
     <Compile Include="Event\UserListEventArgs.cs" />
     <Compile Include="IrcConnection.cs" />

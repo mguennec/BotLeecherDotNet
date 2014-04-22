@@ -108,11 +108,25 @@ namespace BotLeecherWPF.ViewModel
             Service.MessageEvent += OnMessage;
             Service.PackEvent += OnPack;
             Service.TransferStatusEvent += OnTransferStatus;
+            Service.TransferEndEvent += OnTransferEnd;
             tbi = new TaskbarIcon();
 
             tbi.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BotLeecherWPF.Resources.PerfCenterCpl.ico"));
             tbi.Visibility = System.Windows.Visibility.Visible;
             Dispatcher.CurrentDispatcher.ShutdownStarted += DisposeTask;
+        }
+
+        private void OnTransferEnd(object sender, Event.TransferEndEventArgs e)
+        {
+            if (e.Completed)
+            {
+                this.OnMessage(sender, new Event.MessageEventArgs("Download Complete:" + e.FileName, MessageType.DOWNLOAD));
+            }
+            else
+            {
+                this.OnMessage(sender, new Event.MessageEventArgs("Download Failed:" + e.FileName, MessageType.ERROR));
+            }
+            ChangeStatus(e.BotName, "", 0);
         }
 
         private void DisposeTask(object sender, EventArgs e)
@@ -171,20 +185,25 @@ namespace BotLeecherWPF.ViewModel
             return item;
         }
 
+        private void ChangeStatus(string botName, string fileName, int completion)
+        {
+            var item = GetItem(botName);
+            if (item != null)
+            {
+                item.State.Name = fileName;
+                item.State.Progress = completion;
+
+                if (TaskbarManager.IsPlatformSupported)
+                {
+                    TaskbarManager.Instance.SetProgressValue(completion, 100);
+                }
+            }
+        }
+
 
         private void OnTransferStatus(object sender, Event.TransferStatusEventArgs e)
         {
-            var item = GetItem(e.BotName);
-            if (item != null)
-            {
-                item.State.Name = e.FileName;
-                item.State.Progress = e.Completion;
-                
-                if (TaskbarManager.IsPlatformSupported)
-                {
-                    TaskbarManager.Instance.SetProgressValue(e.Completion, 100);
-                }
-            }
+            ChangeStatus(e.BotName, e.FileName, e.Completion);
         }
 
         private void OnPack(object sender, Event.PackEventArgs e)
@@ -196,19 +215,22 @@ namespace BotLeecherWPF.ViewModel
             }
         }
 
+
         private void OnMessage(object sender, Event.MessageEventArgs e)
         {
             context = context ?? SynchronizationContext.Current;
             context.Send(x =>
             {
                 Event.MessageEventArgs msg = (Event.MessageEventArgs)x;
-                Log = DateTime.Now.ToLongTimeString() + ": " + msg.Message + "\n" + Log;
+                var text = msg.Message;
+                var type = msg.Type;
+                Log = DateTime.Now.ToLongTimeString() + ": " + text + "\n" + Log;
                 BalloonIcon icon;
-                if (msg.Type == MessageType.ERROR)
+                if (type == MessageType.ERROR)
                 {
                     icon = BalloonIcon.Error;
                 }
-                else if (msg.Type == MessageType.DOWNLOAD)
+                else if (type == MessageType.DOWNLOAD)
                 {
                     icon = BalloonIcon.None;
                 }
@@ -216,7 +238,7 @@ namespace BotLeecherWPF.ViewModel
                 {
                     icon = BalloonIcon.Info;
                 }
-                tbi.ShowBalloonTip(Enum.GetName(typeof(MessageType), msg.Type), Log.Substring(0, Math.Min(Log.Length, 500)), icon);
+                tbi.ShowBalloonTip(Enum.GetName(typeof(MessageType), type), Log.Substring(0, Math.Min(Log.Length, 500)), icon);
             }, e);
         }
 

@@ -16,6 +16,7 @@ namespace BotLeecher.Service
         public event EventHandler<PackEventArgs> PackEvent;
         public event EventHandler<UserListEventArgs> UserListEvent;
         public event EventHandler<TransferStatusEventArgs> TransferStatusEvent;
+        public event EventHandler<TransferEndEventArgs> TransferEndEvent;
 
         protected virtual void OnMessageEvent(MessageEventArgs args)
         {
@@ -49,6 +50,14 @@ namespace BotLeecher.Service
                 handler(this, args);
             }
         }
+        protected virtual void OnTransferEndEvent(TransferEndEventArgs args)
+        {
+            EventHandler<TransferEndEventArgs> handler = TransferEndEvent;
+            if (handler != null)
+            {
+                handler(this, args);
+            }
+        }
 
         public void SendMessage(string message, MessageType type)
         {
@@ -70,6 +79,16 @@ namespace BotLeecher.Service
             OnTransferStatusEvent(new TransferStatusEventArgs(botName, fileName, completion));
         }
 
+
+        public void SendTransferComplete(string botName, string fileName)
+        {
+            OnTransferEndEvent(new TransferEndEventArgs(botName, fileName, true));
+        }
+
+        public void SendTransferFailed(string botName, string fileName)
+        {
+            OnTransferEndEvent(new TransferEndEventArgs(botName, fileName, false));
+        }
     }
 
     public enum MessageType
