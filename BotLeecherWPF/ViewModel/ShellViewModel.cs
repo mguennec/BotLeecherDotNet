@@ -1,4 +1,5 @@
 ﻿using BotLeecher.Tools;
+using BotLeecherWPF.Components;
 using BotLeecherWPF.Links;
 using FirstFloor.ModernUI.Presentation;
 using Microsoft.Practices.ServiceLocation;
@@ -61,7 +62,7 @@ namespace BotLeecherWPF.ViewModel
         /// Constructor
         /// </summary>
         [ImportingConstructor]
-        public ShellViewModel(ILogger logger)
+        public ShellViewModel(ILogger logger, TaskbarLeecher icon)
         {
 
             this._logger = logger;

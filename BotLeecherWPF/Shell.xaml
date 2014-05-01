@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mui="http://firstfloorsoftware.com/ModernUI"
     xmlns:my="clr-namespace:BotLeecherWPF"
+    xmlns:myc="clr-namespace:BotLeecherWPF.Components"
     xmlns:lex="http://wpflocalizeextension.codeplex.com"
     lex:LocalizeDictionary.IncludeInvariantCulture="True"
     lex:LocalizeDictionary.DesignCulture="en-US"

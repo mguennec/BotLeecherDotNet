@@ -1,4 +1,5 @@
 ﻿using BotLeecher.Service;
+using BotLeecherWPF.Components;
 using FirstFloor.ModernUI.Windows;
 using Hardcodet.Wpf.TaskbarNotification;
 using Microsoft.WindowsAPICodePack.Taskbar;
@@ -28,6 +29,8 @@ namespace BotLeecherWPF.ViewModel
         private ObservableCollection<string> channelList = new ObservableCollection<string>();
         private SynchronizationContext context;
         private string log = "";
+
+
         private TaskbarIcon tbi;
 
         public string Server { get; set; }
@@ -90,7 +93,7 @@ namespace BotLeecherWPF.ViewModel
         }
 
         [ImportingConstructor]
-        public MainViewModel(BotMediator botMediator, EventMediatorService service)
+        public MainViewModel(BotMediator botMediator, EventMediatorService service, TaskbarLeecher icon)
         {
             this.BotMediator = botMediator;
             this.Service = service;
@@ -109,11 +112,7 @@ namespace BotLeecherWPF.ViewModel
             Service.PackEvent += OnPack;
             Service.TransferStatusEvent += OnTransferStatus;
             Service.TransferEndEvent += OnTransferEnd;
-            tbi = new TaskbarIcon();
-
-            tbi.Icon = new Icon(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("BotLeecherWPF.Resources.PerfCenterCpl.ico"));
-            tbi.Visibility = System.Windows.Visibility.Visible;
-            Dispatcher.CurrentDispatcher.ShutdownStarted += DisposeTask;
+            tbi = icon;
         }
 
         private void OnTransferEnd(object sender, Event.TransferEndEventArgs e)
@@ -128,15 +127,6 @@ namespace BotLeecherWPF.ViewModel
             }
             ChangeStatus(e.BotName, "", 0);
         }
-
-        private void DisposeTask(object sender, EventArgs e)
-        {
-            if (tbi != null && !tbi.IsDisposed)
-            {
-                tbi.Dispose();
-            }
-        }
-
         public void GetList()
         {
             GetList(true);

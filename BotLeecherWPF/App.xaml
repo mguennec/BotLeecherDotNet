@@ -9,24 +9,24 @@
              xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
   <Application.Resources>
     <ResourceDictionary>
-      <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
-        <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
-            </ResourceDictionary.MergedDictionaries>
-            <!-- WPF 4.0 workaround -->
-            <Style TargetType="{x:Type Rectangle}" />
-            <!-- end of workaround -->
+        <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml" />
+            <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml" />
+        </ResourceDictionary.MergedDictionaries>
+        <!-- WPF 4.0 workaround -->
+        <Style TargetType="{x:Type Rectangle}" />
+        <!-- end of workaround -->
 
-            <Style TargetType="mui:ModernFrame">
-                <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
-            </Style>
-            <Style TargetType="mui:ModernTab">
-                <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
-            </Style>
-            <Style TargetType="local:Shell">
-                <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
-            </Style>
-        </ResourceDictionary>
+        <Style TargetType="mui:ModernFrame">
+            <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
+        </Style>
+        <Style TargetType="mui:ModernTab">
+            <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
+        </Style>
+        <Style TargetType="local:Shell">
+            <Setter Property="ContentLoader" Value="{DynamicResource MefContentLoader}" />
+        </Style>
+    </ResourceDictionary>
 
     </Application.Resources>
 </Application>
